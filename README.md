@@ -1,0 +1,1 @@
+## Inertia + Vue Laravel Starter Kit

@@ -1,0 +1,39 @@
+<template>
+	<Head>
+		<title inertia >{{ metadata.title }}</title>
+
+		<meta name="twitter:title" :content="metadata.title" inertia />
+		<meta name="twitter:description" :content="metadata.description" inertia />
+		<meta name="twitter:image" :content="metadata.twitterImage" inertia />
+
+		<meta type="description" :content="metadata.description" inertia />
+		<meta type="keywords" :content="metadata.keywords" inertia />
+		<meta property="og:url" :content="fullUrl" inertia />
+		<meta property="og:type" :content="metadata.ogType" inertia />
+		<meta property="og:title" :content="metadata.title" inertia />
+		<meta property="og:description" :content="metadata.description" inertia />
+		<meta property="og:image" :content="metadata.ogImage" inertia />
+	</Head>
+</template>
+
+<script>
+	import { Head } from "@inertiajs/vue3";
+
+	const isServer = (typeof window === 'undefined');
+
+	export default {
+		components: {
+			Head
+		},
+
+		props: {
+			metadata: Object,
+		},
+
+		data: function () {
+			return {
+				fullUrl: (isServer ? '' : window.location.href)
+			}
+		},
+	}
+</script>

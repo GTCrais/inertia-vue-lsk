@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Http\Middleware\SanctumMiddleware;
 use App\Models\User;
-use App\Notifications\ResetPassword;
 use App\Services\ViewMetadataProviderService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Relations\Relation;

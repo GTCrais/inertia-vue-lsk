@@ -19,8 +19,6 @@
 <script>
 	import { Head } from "@inertiajs/vue3";
 
-	const isServer = (typeof window === 'undefined');
-
 	export default {
 		components: {
 			Head
@@ -32,7 +30,7 @@
 
 		data: function () {
 			return {
-				fullUrl: (isServer ? '' : window.location.href)
+				fullUrl: (this.$isBrowser ? window.location.href : '')
 			}
 		},
 	}

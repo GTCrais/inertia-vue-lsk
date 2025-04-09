@@ -12,7 +12,11 @@ export default defineConfig(({ mode }) => {
 	};
 
 	if (env.VITE_SSR) {
-		laravelConfig.ssr = 'resources/js/ssr.js';
+		const viteSsr = env.VITE_SSR.toLowerCase();
+
+		if (!['false', 'null'].includes(viteSsr)) {
+			laravelConfig.ssr = 'resources/js/ssr.js';
+		}
 	}
 
 	return {

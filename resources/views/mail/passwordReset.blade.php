@@ -17,7 +17,7 @@
 	</div>
 
 	<p class="break-all">
-		The button doesn't work? Try the verification link:<br>
+		The button doesn't work? Try the reset link:<br>
 		<a href="{!! $resetLink  !!}">
 			{!! $resetLink  !!}
 		</a>

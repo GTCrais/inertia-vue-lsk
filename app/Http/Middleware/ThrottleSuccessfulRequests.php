@@ -10,9 +10,9 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /*
- * Why this class? Well, if you have a newsletter or a contact form, you probably want to throttle users from spamming
- * through these forms. However, if a user submits the form and the request is not successful (they didn't enter
- * their email, for example), then that request shouldn't count towards the rate limit.
+ * Why this class? Well, if you have a newsletter or a contact form, you probably want to throttle users from
+ * spamming through these forms. However, if a user submits the form and the request is not successful (they
+ * didn't enter their email, for example), then that request shouldn't count towards the rate limit.
  */
 class ThrottleSuccessfulRequests extends ThrottleRequests
 {

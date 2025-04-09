@@ -18,6 +18,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable()->index();
             $table->string('password');
             $table->rememberToken();
+			$table->string('facebook_id', 100)->nullable();
+			$table->string('google_id', 100)->nullable();
+			$table->string('apple_id')->nullable();
             $table->timestamps();
         });
 

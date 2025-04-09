@@ -3,6 +3,7 @@ import { createApp, createSSRApp, h } from "vue";
 import { createInertiaApp } from '@inertiajs/vue3';
 import DefaultLayout from "@/js/layouts/DefaultLayout.vue";
 import { Link } from '@inertiajs/vue3';
+import isServer from "@/js/plugins/isServer.js";
 
 Bootstrap.setupAxios();
 
@@ -23,6 +24,7 @@ createInertiaApp({
 			createApp(appOptions);
 
 		app.use(plugin)
+			.use(isServer)
 			.component('AppLink', Link)
 			.mount(el);
 

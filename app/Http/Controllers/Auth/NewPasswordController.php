@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class NewPasswordController extends Controller
 {
-	public function show(Request $request)
+	public function create(Request $request)
 	{
 		return Inertia::render('auth/NewPassword', [
 			'message' => session('newPasswordMessage'),

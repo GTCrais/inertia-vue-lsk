@@ -22,6 +22,8 @@
 		<meta property="og:image:height" content="800" />
 		<meta property="fb:app_id" content="{{ $facebookAppId }}" />
 
+		<link rel="icon" type="image/x-icon" href="/img/logos/favicon.png">
+
 		@vite(['resources/css/app.css', 'resources/js/app.js'])
 		@inertiaHead
 	</head>
@@ -35,7 +37,7 @@
 					appId: '<?php echo config('services.facebook.client_id')?>',
 					cookie: false,
 					xfbml: false,
-					version: 'v18.0'
+					version: 'v22.0'
 				});
 			};
 

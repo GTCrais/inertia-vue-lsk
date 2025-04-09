@@ -54,14 +54,16 @@ const SocialAuth = {
 		},
 
 		initGoogleClient() {
-			const _google = window.google || null;
+			if (this.$isBrowser) {
+				const _google = window.google || null;
 
-			if (window.googleClientId) {
-				this.googleAuth = _google?.accounts?.oauth2?.initTokenClient({
-					client_id: window.googleClientId,
-					scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
-					callback: this.handleGoogleAccessTokenResponse
-				});
+				if (window.googleClientId) {
+					this.googleAuth = _google?.accounts?.oauth2?.initTokenClient({
+						client_id: window.googleClientId,
+						scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+						callback: this.handleGoogleAccessTokenResponse
+					});
+				}
 			}
 		},
 

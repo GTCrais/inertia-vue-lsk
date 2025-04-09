@@ -31,7 +31,7 @@ class ResetPassword extends LaravelResetPassword implements ShouldQueue
 			return call_user_func(static::$createUrlCallback, $notifiable, $this->token);
 		}
 
-		return url(route('new-password.show', [
+		return url(route('new-password.create', [
 			'token' => $this->token,
 			'email' => $notifiable->getEmailForPasswordReset(),
 		], false));

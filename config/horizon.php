@@ -166,7 +166,7 @@ return [
     |
     */
 
-    'memory_limit' => 64,
+    'memory_limit' => 256,
 
     /*
     |--------------------------------------------------------------------------
@@ -180,34 +180,52 @@ return [
     */
 
     'defaults' => [
-        'supervisor-1' => [
+        'supervisor-default' => [
             'connection' => 'redis',
             'queue' => ['default'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
-            'maxProcesses' => 1,
+            'maxProcesses' => 2,
             'maxTime' => 0,
             'maxJobs' => 0,
-            'memory' => 128,
+            'memory' => 256,
             'tries' => 1,
             'timeout' => 60,
             'nice' => 0,
         ],
+		'supervisor-mail' => [
+			'connection' => 'redis',
+			'queue' => ['default'],
+			'balance' => 'auto',
+			'autoScalingStrategy' => 'time',
+			'maxProcesses' => 2,
+			'maxTime' => 0,
+			'maxJobs' => 0,
+			'memory' => 256,
+			'tries' => 1,
+			'timeout' => 60,
+			'nice' => 0,
+		],
     ],
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
-                'maxProcesses' => 10,
+            'supervisor-default' => [
+                'maxProcesses' => 5,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
             ],
+			'supervisor-mail' => [
+				'maxProcesses' => 5,
+				'balanceMaxShift' => 1,
+				'balanceCooldown' => 3,
+			],
         ],
 
-        'local' => [
+        /*'local' => [
             'supervisor-1' => [
                 'maxProcesses' => 3,
             ],
-        ],
+        ],*/
     ],
 ];

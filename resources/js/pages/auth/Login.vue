@@ -11,19 +11,21 @@
 
 			<div>
 				<a href="#"
-				   class="flex mb-6 w-full items-center justify-center gap-3 rounded-full px-3 py-2.5
-				   		text-white bg-blue-900 hover:bg-blue-950 transition-colors"
+				   class="flex mb-6 w-full items-center justify-center gap-3 rounded-full px-3 py-2
+				   		text-facebook border border-gray-200 hover:border-gray-300 transition-colors"
 				   @click.prevent="logInWithFacebook"
 				>
-					<span class="text-17px font-medium leading-6">Facebook</span>
+					<img src="/img/logos/facebook_logo.svg" class="h-[30px]" alt="">
+					<span class="text-17px font-medium">Sign in with Facebook</span>
 				</a>
 
 				<a href="#"
-				   class="flex mb-6 w-full items-center justify-center gap-3 rounded-full px-3 py-2.5
-				   		text-white bg-red-800 hover:bg-red-900 transition-colors"
+				   class="flex mb-6 w-full items-center justify-center gap-3 rounded-full px-3 py-2
+				   		border border-gray-200 hover:border-gray-300 transition-colors"
 				   @click.prevent="logInWithGoogle"
 				>
-					<span class="text-17px font-medium leading-6">Google</span>
+					<img src="/img/logos/google_logo.svg" class="h-[30px]" alt="">
+					<span class="text-17px font-medium leading-6">Sign in with Google</span>
 				</a>
 			</div>
 

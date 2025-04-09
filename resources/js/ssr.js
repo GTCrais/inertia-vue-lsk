@@ -4,6 +4,7 @@ import { renderToString } from '@vue/server-renderer'
 import { createSSRApp, h } from 'vue'
 import DefaultLayout from "@/js/layouts/DefaultLayout.vue";
 import { Link } from '@inertiajs/vue3';
+import isServer from "@/js/plugins/isServer.js";
 
 createServer((page) =>
 	createInertiaApp({
@@ -24,7 +25,9 @@ createServer((page) =>
 				render: () => h(App, props),
 			});
 
-			app.use(plugin).component('AppLink', Link);
+			app.use(plugin)
+				.use(isServer)
+				.component('AppLink', Link);
 
 			return app;
 		},

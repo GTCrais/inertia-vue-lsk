@@ -4,7 +4,11 @@ namespace App\Http\Middleware;
 
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
-
+/*
+ * Why extend the original Sanctum middleware? Sanctum doesn't place nicely with Inertia.
+ * Details here: https://github.com/laravel/sanctum/issues/482
+ * In addition to fixing these issues, changes in this middleware allow for a custom mobile app header.
+ */
 class SanctumMiddleware extends EnsureFrontendRequestsAreStateful
 {
 	/**

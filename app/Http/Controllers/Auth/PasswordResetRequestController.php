@@ -10,7 +10,7 @@ use Inertia\Inertia;
 
 class PasswordResetRequestController extends Controller
 {
-	public function show()
+	public function create()
 	{
 		return Inertia::render('auth/ForgottenPassword', [
 			'message' => session('passwordResetRequestMessage'),

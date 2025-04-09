@@ -15,7 +15,11 @@ class AuthService
 
 	public function login(LoginRequest $request)
 	{
-		return auth()->guard('web')->attempt($request->only('email', 'password'));
+		if ($success = auth()->guard('web')->attempt($request->only('email', 'password'))) {
+			\RateLimiter::clear('login');
+		}
+
+		return $success;
 	}
 
 	public function logout(Request $request)

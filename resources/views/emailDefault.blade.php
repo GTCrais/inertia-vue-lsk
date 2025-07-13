@@ -9,13 +9,10 @@
 		<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
 		<style>
-			body {
-			  margin: 0;
-			}
-
 			.email-body {
               background: #f7f7f7;
 			  padding-top: 20px;
+              margin: 0;
 			}
 
 			.inner-container {

@@ -10,7 +10,9 @@ class HandleInertiaRequests extends Middleware
 {
 	public function __construct(
 		protected InertiaHelperService $inertiaHelperService
-	) {}
+	) {
+		$this->rootView = InertiaHelperService::$rootView;
+	}
 
     /**
      * The root template that's loaded on the first page visit.
@@ -19,7 +21,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @var string
      */
-    protected $rootView = 'default';
+    protected $rootView;
 
     /**
      * Determines the current asset version.

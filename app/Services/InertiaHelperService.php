@@ -8,13 +8,15 @@ use Inertia\Inertia;
 
 class InertiaHelperService
 {
+	public static $rootView = 'default';
+
 	public function __construct(
 	    protected ViewMetadataProviderService $viewMetadataProviderService
 	) {}
 
 	public function setRootView()
 	{
-		Inertia::setRootView('default');
+		Inertia::setRootView(static::$rootView);
 	}
 
 	public function shareData(Request $request)

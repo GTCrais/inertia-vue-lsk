@@ -47,7 +47,8 @@ Out of the box this starter kit provides:
 - `app/Bootstrapers`
 - `app/Http/Middleware/SanctumMiddleware.php`
 - `app/Providers/StarterKitServiceProvider.php`
-- `app/Services/ViewMetadataProviderService.php`, used in `app/Http/Middleware/HandleInertiaRequests.php`, `app/Http/Controllers/PageController.php` and `resource/views/default.blade.php`
+- `app/Services/InertiaHelperService.php` used in `app/Bootstrappers/ExceptionsHelper.php` and `app/Http/Middleware/HandlerInertiaRequests.php`
+- `app/Services/ViewMetadataProviderService.php`, used in `app/Services/InertiaHelperService.php`, `app/Http/Controllers/PageController.php` and `resource/views/default.blade.php`
 
 ### License
 

@@ -56,6 +56,10 @@ class SanctumMiddleware extends EnsureFrontendRequestsAreStateful
 			Str::of($request->headers->get('host'))->replaceFirst('https://', '')->replaceFirst('http://', '')->value()
 		];
 
+		if (Str::of($request->getHttpHost())->endsWith(config('session.domain'))) {
+			$domains[] = config('session.domain');
+		}
+
 		$stateful = array_filter(config('sanctum.stateful', []));
 
 		$fromFrontend = collect($domains)->intersect($stateful)->isNotEmpty();

@@ -2,15 +2,14 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Resources\UserResource;
-use App\Services\ViewMetadataProviderService;
+use App\Services\InertiaHelperService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
 	public function __construct(
-		protected ViewMetadataProviderService $viewMetadataProviderService
+		protected InertiaHelperService $inertiaHelperService
 	) {}
 
     /**
@@ -41,13 +40,9 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return array_merge(parent::share($request), [
-			'user' => $request->user() ? UserResource::make($request->user()) : null,
-			// We're using "fn()" here because we want the "toArray()" method to resolve just before the Response
-			// is sent back to the User, rather than resolving before metadata is actually updated
-			'metadata' => fn() => $this->viewMetadataProviderService->toArray(),
-			'sessionExpired' => session('sessionExpired'),
-			'tooManyRequests' => session('tooManyRequests')
-        ]);
+        return array_merge(
+			parent::share($request),
+			$this->inertiaHelperService->getShareData($request)
+		);
     }
 }

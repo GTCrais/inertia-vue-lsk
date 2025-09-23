@@ -2,6 +2,7 @@
 
 namespace App\Bootstrappers;
 
+use App\Services\InertiaHelperService;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,10 @@ class ExceptionsHandler
 	public static function handle(Exceptions $exceptions)
 	{
 		$exceptions->respond(function (Response $response, Throwable $exception, \Illuminate\Http\Request $request) {
+			$inertiaHelperService = app(InertiaHelperService::class);
+			$inertiaHelperService->setRootView();
+			$inertiaHelperService->shareData($request);
+
 			if (
 				(config('app.gracefully_handle_exceptions') || !app()->environment(['local', 'testing'])) &&
 				in_array($response->getStatusCode(), [500, 503, 404, 403])

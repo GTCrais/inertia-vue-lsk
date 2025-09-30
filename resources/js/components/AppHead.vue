@@ -6,8 +6,8 @@
 		<meta name="twitter:description" :content="metadata.description" inertia />
 		<meta name="twitter:image" :content="metadata.twitterImage" inertia />
 
-		<meta type="description" :content="metadata.description" inertia />
-		<meta type="keywords" :content="metadata.keywords" inertia />
+		<meta name="description" :content="metadata.description" inertia />
+		<meta name="keywords" :content="metadata.keywords" inertia />
 		<meta property="og:url" :content="fullUrl" inertia />
 		<meta property="og:type" :content="metadata.ogType" inertia />
 		<meta property="og:title" :content="metadata.title" inertia />

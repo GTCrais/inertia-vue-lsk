@@ -26,7 +26,12 @@ const SocialAuth = {
 					this.$inertia.post(
 						'/login/facebook',
 						{ token: token },
-						{ onFinish: () => this.authenticating = false }
+						{
+							onSuccess: () => {
+								this.socialAuthSuccess();
+							},
+							onFinish: () => this.authenticating = false
+						}
 					);
 				})
 				.catch((error) => {
@@ -79,12 +84,21 @@ const SocialAuth = {
 			this.$inertia.post(
 				'/login/google',
 				{ token: tokenResponse.access_token },
-				{ onFinish: () => this.authenticating = false }
+				{
+					onSuccess: () => {
+						this.socialAuthSuccess();
+					},
+					onFinish: () => this.authenticating = false
+				}
 			);
 		},
 
 		getGoogleAccessToken() {
 			this.googleAuth?.requestAccessToken();
+		},
+
+		socialAuthSuccess() {
+			// Implement on per-component basis
 		}
 	}
 }

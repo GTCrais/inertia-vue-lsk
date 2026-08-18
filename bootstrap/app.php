@@ -10,7 +10,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
-	->withRouting(fn() => RouteRegistrar::register())
+	->withRouting(fn() => RouteRegistrar::register(), channels: RouteRegistrar::channels())
 	->withMiddleware(fn(Middleware $middleware) => MiddlewareRegistrar::register($middleware))
 	->withExceptions(fn(Exceptions $exceptions) => ExceptionsHandler::handle($exceptions))
 	->withSchedule(fn(Schedule $schedule) => ScheduleRegistrar::register($schedule))

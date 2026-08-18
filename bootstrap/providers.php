@@ -3,5 +3,6 @@
 return [
     App\Providers\AppServiceProvider::class,
     // App\Providers\HorizonServiceProvider::class,
+	App\Providers\RateLimiterServiceProvider::class,
     App\Providers\StarterKitServiceProvider::class,
 ];

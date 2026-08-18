@@ -15,6 +15,12 @@ return [
 
     'default' => env('QUEUE_CONNECTION', 'database'),
 
+	'map' => [
+		'mail' => env('QUEUE_MAIL', 'default'),
+		'broadcast' => env('QUEUE_BROADCAST', 'default'),
+		'push_notifications' => env('QUEUE_PUSH_NOTIFICATIONS', 'default'),
+	],
+
     /*
     |--------------------------------------------------------------------------
     | Queue Connections

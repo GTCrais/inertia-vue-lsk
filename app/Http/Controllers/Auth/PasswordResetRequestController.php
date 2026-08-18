@@ -22,6 +22,13 @@ class PasswordResetRequestController extends Controller
 	{
 		$status = $passwordResetService->sendResetLink($request->only('email'));
 
+		if ($request->wantsJson()) {
+			return response()->json([
+				'success' => ($status === Password::RESET_LINK_SENT),
+				'message' => trans($status)
+			]);
+		}
+
 		return back()->with([
 			'passwordResetRequestStatus' => $status,
 			'passwordResetRequestMessage' => trans($status)

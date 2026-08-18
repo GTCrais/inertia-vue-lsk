@@ -3,16 +3,16 @@
 namespace App\Http\Middleware;
 
 use App\Services\InertiaHelperService;
+use App\Services\ViewMetadataProviderService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
 	public function __construct(
+		protected ViewMetadataProviderService $viewMetadataProviderService,
 		protected InertiaHelperService $inertiaHelperService
-	) {
-		$this->rootView = InertiaHelperService::$rootView;
-	}
+	) {}
 
     /**
      * The root template that's loaded on the first page visit.
@@ -21,7 +21,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @var string
      */
-    protected $rootView;
+    protected $rootView = 'default';
 
     /**
      * Determines the current asset version.

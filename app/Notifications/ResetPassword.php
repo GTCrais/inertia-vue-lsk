@@ -15,9 +15,8 @@ class ResetPassword extends LaravelResetPassword implements ShouldQueue
 	public $timeout = (2 * 60); // 2 minutes
 	public $failOnTimeout = true;
 
-	/**
-	 * Get the mail representation of the notification.
-	 */
+	public bool $mobile;
+
 	public function toMail($notifiable)
 	{
 		return new \App\Mail\ResetPassword()
@@ -31,16 +30,22 @@ class ResetPassword extends LaravelResetPassword implements ShouldQueue
 			return call_user_func(static::$createUrlCallback, $notifiable, $this->token);
 		}
 
-		return url(route('new-password.create', [
+		$params = [
 			'token' => $this->token,
 			'email' => $notifiable->getEmailForPasswordReset(),
-		], false));
+		];
+
+		if ($this->mobile) {
+			$params['mobile'] = 1;
+		}
+
+		return url(route('new-password.create', $params, false));
 	}
 
 	public function viaQueues(): array
 	{
 		return [
-			'mail' => 'mail'
+			'mail' => config('queue.map.mail')
 		];
 	}
 

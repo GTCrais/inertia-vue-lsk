@@ -13,11 +13,7 @@ class SocialAuthSessionController extends Controller
 
 	public function store(SocialNetworkLoginRequest $request, SocialAuthService $socialAuthService, $socialNetwork)
 	{
-		$user = $socialAuthService->loginUsingSocialNetwork($request, $socialNetwork);
-
-		if ($request->wantsJson()) {
-			return response()->json($user);
-		}
+		$socialAuthService->loginThroughWeb($request, $socialNetwork);
 
 		return redirect()->route('user-account.show');
     }

@@ -34,6 +34,19 @@ return [
 		'redirect' => '/'
 	],
 
+	'apple' => [
+		'client_id' => env('APPLE_CLIENT_ID'), // Required. Bundle ID from Identifier in Apple Developer.
+		'client_secret' => env('APPLE_CLIENT_SECRET'), // Empty. We create it from private key.
+		'key_id' => env('APPLE_KEY_ID'), // Required. Key ID from Keys in Apple Developer.
+		'team_id' => env('APPLE_TEAM_ID'), // Required. App ID Prefix from Identifier in Apple Developer.
+		'private_key' => base_path(env('APPLE_PRIVATE_KEY')), // Required. Must be absolute path, e.g. /var/www/cert/AuthKey_XYZ.p8
+		'redirect' => '/'
+	],
+
+	'fathom' => [
+		'active' => env('FATHOM_ACTIVE', false)
+	],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

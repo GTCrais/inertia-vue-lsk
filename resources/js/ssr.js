@@ -1,3 +1,4 @@
+import Bootstrap from "@/js/bootstrap/bootstrap.js";
 import { createInertiaApp } from '@inertiajs/vue3'
 import createServer from '@inertiajs/vue3/server'
 import { renderToString } from '@vue/server-renderer'
@@ -24,6 +25,8 @@ createServer((page) =>
 			const app = createSSRApp({
 				render: () => h(App, props),
 			});
+
+			Bootstrap.setupLibraries(app);
 
 			app.use(plugin)
 				.use(isServer)

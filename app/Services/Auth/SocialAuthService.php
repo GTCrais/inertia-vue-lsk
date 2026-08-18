@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 use App\Http\Concerns\RefreshesSession;
 use App\Http\Requests\Auth\SocialNetworkLoginRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -14,35 +15,51 @@ class SocialAuthService
 {
 	use RefreshesSession;
 
-	public function loginUsingSocialNetwork(SocialNetworkLoginRequest $request, $socialNetwork)
+	public function loginThroughWeb(SocialNetworkLoginRequest $request, $socialNetwork)
 	{
 		$socialiteUser = $this->getSocialiteUser($socialNetwork, $request->input('token'));
+		$user = $this->getUserFromSocialiteUser($request, $socialNetwork, $socialiteUser);
 
-		if ($socialNetwork == 'facebook') {
-			$email = $socialiteUser->user['email'];
-		} else if ($socialNetwork == 'google') {
-			$email = $socialiteUser->email;
-		} else if ($socialNetwork == 'apple') {
-			$email = $socialiteUser->email;
-		}
+		auth()->guard('web')->login($user, remember: true);
 
-		/** @var string $email */
+		return $user;
+	}
+
+	public function getUserFromSocialiteUser(Request $request, string $socialNetwork, SocialiteUser $socialiteUser): User
+	{
+		$email = $this->extractEmailFromSocialiteUser($socialiteUser, $socialNetwork);
 		$user = User::where('email', $email)->first();
 
 		if (!$user) {
 			$this->refreshSession($request);
-			$user = $this->createUserFromSocialiteUser($socialiteUser, $socialNetwork);
+
+			try {
+				\DB::beginTransaction();
+
+				$user = $this->createUserFromSocialiteUser($socialiteUser, $socialNetwork);
+
+				\DB::commit();
+			} catch (\Throwable $e) {
+				\DB::rollBack();
+				throw $e;
+			}
 		} else {
 			$this->updateUserFromSocialiteUser($socialiteUser, $user, $socialNetwork);
 		}
 
-		if ($request->wantsJson()) {
-			$user->withAccessToken($user->createToken('AUTH_TOKEN'))->append('plain_text_token');
-		} else {
-			auth()->guard('web')->login($user);
+		return $user;
+	}
+
+	/**
+	 * Extract email from a Socialite user based on the social network.
+	 */
+	protected function extractEmailFromSocialiteUser(SocialiteUser $socialiteUser, string $socialNetwork): string
+	{
+		if ($socialNetwork == 'facebook') {
+			return $socialiteUser->user['email'] ?? $socialiteUser->email;
 		}
 
-		return $user;
+		return $socialiteUser->email;
 	}
 
 	protected function updateUserFromSocialiteUser(SocialiteUser $socialiteUser, User $user, $socialNetwork)

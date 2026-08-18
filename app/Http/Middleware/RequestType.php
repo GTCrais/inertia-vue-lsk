@@ -19,6 +19,10 @@ class RequestType
 			abort(404);
 		}
 
+		if (($requiredRequestType == 'mobileApp') && !$request->mobileApp()) {
+			abort(404);
+		}
+
         return $next($request);
     }
 }

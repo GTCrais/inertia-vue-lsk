@@ -3,17 +3,12 @@
 namespace App\Providers;
 
 use App\Http\Middleware\SanctumMiddleware;
-use App\Models\User;
 use App\Services\ViewMetadataProviderService;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 
 class StarterKitServiceProvider extends ServiceProvider
 {
@@ -35,6 +30,25 @@ class StarterKitServiceProvider extends ServiceProvider
 		Request::macro('stateless', function() {
 			return !$this->from_frontend;
 		});
+
+		Request::macro('mobileDeviceId', function() {
+			return $this->header(config('mobile.deviceIdHeader'));
+		});
+
+		Request::macro('mobileApp', function() {
+			if ($this->from_frontend) {
+				return false;
+			}
+
+			if ($this->hasHeader(config('mobile.header'))) {
+				return true;
+			}
+
+			// Preflight requests (OPTIONS): header is declared here instead
+			$acrHeaders = strtolower((string) $this->headers->get('Access-Control-Request-Headers', ''));
+
+			return str_contains($acrHeaders, strtolower(config('mobile.header')));
+		});
     }
 
     /**
@@ -47,27 +61,5 @@ class StarterKitServiceProvider extends ServiceProvider
 
 		JsonResource::withoutWrapping();
 		ResourceCollection::withoutWrapping();
-
-		Relation::enforceMorphMap([
-			'user' => User::class
-		]);
-
-		RateLimiter::for('login', function (Request $request) {
-			$throttleKey = Str::transliterate(Str::lower($request->input('email')) . '_' . $request->ip());
-
-			return Limit::perMinute(5)->by($throttleKey);
-		});
-
-		RateLimiter::for('register', function (Request $request) {
-			return Limit::perMinute(5)->by($request->ip() . '_register');
-		});
-
-		RateLimiter::for('passwordReset', function (Request $request) {
-			return Limit::perMinute(3)->by($request->ip() . '_password_reset');
-		});
-
-		RateLimiter::for('emailVerification', function (Request $request) {
-			return Limit::perMinute(6)->by($request->ip() . '_email_verification');
-		});
     }
 }

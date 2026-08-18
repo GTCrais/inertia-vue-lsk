@@ -22,7 +22,6 @@ class VerifyEmailRequest extends FormRequest
 		}
 
 		$this->resolvedUser = $user;
-		$this->requestType = (($this->input('requestType') == 'stateless') ? 'stateless' : 'stateful');
 
 		if (! hash_equals((string) $user->getKey(), (string) $this->route('id'))) {
 			return false;

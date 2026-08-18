@@ -23,11 +23,11 @@ createInertiaApp({
 			createSSRApp(appOptions) :
 			createApp(appOptions);
 
+		Bootstrap.setupLibraries(app);
+
 		app.use(plugin)
 			.use(isServer)
 			.component('AppLink', Link)
 			.mount(el);
-
-		Bootstrap.setupLibraries(app);
 	}
 });

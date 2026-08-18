@@ -15,20 +15,22 @@ class AuthService
 
 	public function login(LoginRequest $request)
 	{
-		if ($success = auth()->guard('web')->attempt($request->only('email', 'password'))) {
+		if (auth()->guard('web')->attempt($request->only('email', 'password'), remember: true)) {
 			\RateLimiter::clear('login');
 		}
 
-		return $success;
+		return (auth()->guard('web')->user() ?? null);
 	}
 
 	public function logout(Request $request)
 	{
-		auth()->guard('web')->logout();
+		$user = $request->user();
 
-		if ($request->hasSession()) {
-			$request->session()->invalidate();
-			$request->session()->regenerateToken();
+		if ($request->stateful()) {
+			auth()->guard('web')->logout();
+			$this->refreshSession($request);
+		} else {
+			$user->currentAccessToken()->delete();
 		}
 	}
 
@@ -36,8 +38,21 @@ class AuthService
 	{
 		$this->refreshSession($request);
 
-		event(new Registered($user = User::create($request->validated())));
+		try {
+			\DB::beginTransaction();
 
-		auth()->guard('web')->login($user);
+			$user = User::create($request->validated());
+
+			\DB::commit();
+		} catch (\Throwable $e) {
+			\DB::rollBack();
+			throw $e;
+		}
+
+		event(new Registered($user));
+
+		auth()->guard('web')->login($user, remember: true);
+
+		return $user;
 	}
 }

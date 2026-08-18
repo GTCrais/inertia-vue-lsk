@@ -44,7 +44,7 @@ class SanctumMiddleware extends EnsureFrontendRequestsAreStateful
 	{
 		$mobileAppHeader = config('mobile.header');
 
-		if ($mobileAppHeader && $request->hasHeader($mobileAppHeader)) {
+		if ($mobileAppHeader && $request->hasHeader($mobileAppHeader) && !$request->headers->has('Cookie')) {
 			$request->merge(['from_frontend' => false]);
 
 			return false;
@@ -55,10 +55,6 @@ class SanctumMiddleware extends EnsureFrontendRequestsAreStateful
 			Str::of($request->headers->get('origin'))->replaceFirst('https://', '')->replaceFirst('http://', '')->value(),
 			Str::of($request->headers->get('host'))->replaceFirst('https://', '')->replaceFirst('http://', '')->value()
 		];
-
-		if (Str::of($request->getHttpHost())->endsWith(config('session.domain'))) {
-			$domains[] = config('session.domain');
-		}
 
 		$stateful = array_filter(config('sanctum.stateful', []));
 

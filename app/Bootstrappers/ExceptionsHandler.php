@@ -14,6 +14,10 @@ class ExceptionsHandler
 	public static function handle(Exceptions $exceptions)
 	{
 		$exceptions->respond(function (Response $response, Throwable $exception, \Illuminate\Http\Request $request) {
+			if (!$request->inertia()) {
+				return $response;
+			}
+
 			$inertiaHelperService = app(InertiaHelperService::class);
 			$inertiaHelperService->setRootView();
 			$inertiaHelperService->shareData($request);

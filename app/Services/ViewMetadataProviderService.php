@@ -10,6 +10,7 @@ class ViewMetadataProviderService
 	protected $ogType = 'website';
 	protected $ogImage;
 	protected $twitterImage;
+	protected $canonicalUrl = null;
 
 	public function __construct()
 	{
@@ -49,6 +50,15 @@ class ViewMetadataProviderService
 		return $this->keywords;
 	}
 
+	public function getCanonicalUrl()
+	{
+		if (is_null($this->canonicalUrl)) {
+			$this->canonicalUrl = url()->current();
+		}
+
+		return $this->canonicalUrl;
+	}
+
 	public function setOgType($ogType)
 	{
 		$this->ogType = $ogType;
@@ -80,6 +90,7 @@ class ViewMetadataProviderService
 			'title' => $this->getTitle(),
 			'description' => $this->getDescription(),
 			'keywords' => $this->getKeywords(),
+			'canonicalUrl' => $this->getCanonicalUrl(),
 			'ogType' => $this->getOgType(),
 			'ogImage' => $this->getOgImage(),
 			'twitterImage' => $this->getTwitterImage()

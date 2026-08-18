@@ -19,7 +19,7 @@ class VerifyEmail extends LaravelVerifyEmail implements ShouldQueue
 	public $failOnTimeout = true;
 
 	public function __construct(
-		protected bool $stateless
+		public bool $mobile = false
 	) {}
 
 	/**
@@ -44,21 +44,27 @@ class VerifyEmail extends LaravelVerifyEmail implements ShouldQueue
 			return call_user_func(static::$createUrlCallback, $notifiable);
 		}
 
+		$expireMinutes = Config::get('auth.verification.expire');
+		$params = [
+			'id' => $notifiable->getKey(),
+			'hash' => sha1($notifiable->getEmailForVerification()),
+		];
+
+		if ($this->mobile) {
+			$params['mobile'] = 1;
+		}
+
 		return URL::temporarySignedRoute(
 			'verify-email.show',
-			Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
-			[
-				'id' => $notifiable->getKey(),
-				'requestType' => $this->stateless ? 'stateless' : 'stateful',
-				'hash' => sha1($notifiable->getEmailForVerification()),
-			]
+			Carbon::now()->addMinutes($expireMinutes),
+			$params,
 		);
 	}
 
 	public function viaQueues(): array
 	{
 		return [
-			'mail' => 'mail'
+			'mail' => config('queue.map.mail')
 		];
 	}
 

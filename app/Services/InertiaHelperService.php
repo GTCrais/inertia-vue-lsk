@@ -8,10 +8,11 @@ use Inertia\Inertia;
 
 class InertiaHelperService
 {
-	public static $rootView = 'default';
+	public static string $rootView = 'default';
 
 	public function __construct(
-	    protected ViewMetadataProviderService $viewMetadataProviderService
+	    protected ViewMetadataProviderService $viewMetadataProviderService,
+		protected NotificationService $notificationService
 	) {}
 
 	public function setRootView()
@@ -28,7 +29,7 @@ class InertiaHelperService
 
 	public function getShareData(Request $request): array
 	{
-		return [
+		$data = [
 			'user' => $request->user() ? UserResource::make($request->user()) : null,
 			// We're using "fn()" here because we want the "toArray()" method to resolve just before the Response
 			// is sent back to the User, rather than resolving before metadata is actually updated
@@ -36,5 +37,11 @@ class InertiaHelperService
 			'sessionExpired' => session('sessionExpired'),
 			'tooManyRequests' => session('tooManyRequests')
 		];
+
+		if (!$request->inertia()) {
+			$data['unreadNotificationCount'] = $this->notificationService->unreadNotificationsCount($request->user());
+		}
+
+		return $data;
 	}
 }

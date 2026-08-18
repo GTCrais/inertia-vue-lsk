@@ -8,6 +8,8 @@
 
 		<meta name="description" :content="metadata.description" inertia />
 		<meta name="keywords" :content="metadata.keywords" inertia />
+		<link rel="canonical" :href="metadata.canonicalUrl" inertia />
+
 		<meta property="og:url" :content="fullUrl" inertia />
 		<meta property="og:type" :content="metadata.ogType" inertia />
 		<meta property="og:title" :content="metadata.title" inertia />

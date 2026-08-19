@@ -10,26 +10,27 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
-        "inertiajs/inertia-laravel": "^2.0.6",
+        "inertiajs/inertia-laravel": "^3.3.1",
         "intervention/image-laravel": "^4.1",
         "laravel-notification-channels/fcm": "^6.1",
-        "laravel/framework": "^12.31",
-        "laravel/sanctum": "^4.2",
-        "laravel/socialite": "^5.23",
-        "laravel/tinker": "^2.10.1",
-        "predis/predis": "^2.4",
-        "socialiteproviders/apple": "^5.7"
+        "laravel/framework": "^13.26.1",
+        "laravel/sanctum": "^4.3.3",
+        "laravel/socialite": "^5.30",
+        "laravel/tinker": "^3.0.2",
+        "predis/predis": "^3.6.0",
+        "socialiteproviders/apple": "^5.10"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.16",
         "fakerphp/faker": "^1.24.1",
-        "laravel/pail": "^1.2.3",
-        "laravel/pint": "^1.25.1",
-        "laravel/sail": "^1.46",
-        "mockery/mockery": "^1.6.12",
-        "nunomaduro/collision": "^8.8.2",
-        "pestphp/pest": "^3.8.4",
-        "pestphp/pest-plugin-laravel": "^3.2"
+        "fruitcake/laravel-debugbar": "^4.4",
+        "laravel/pail": "^1.2.7",
+        "laravel/pao": "^1.1",
+        "laravel/pint": "^1.30.5",
+        "laravel/sail": "^1.67",
+        "mockery/mockery": "^1.6.14",
+        "nunomaduro/collision": "^8.9.5",
+        "pestphp/pest": "^5.1.1",
+        "pestphp/pest-plugin-laravel": "^5.0.1"
     },
     "autoload": {
         "psr-4": {
@@ -61,7 +62,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
+            "@php artisan dev"
         ]
     },
     "extra": {

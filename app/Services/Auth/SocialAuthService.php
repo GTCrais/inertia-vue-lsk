@@ -22,6 +22,10 @@ class SocialAuthService
 
 		auth()->guard('web')->login($user, remember: true);
 
+		if ($request->hasSession()) {
+			$request->session()->regenerate();
+		}
+
 		return $user;
 	}
 

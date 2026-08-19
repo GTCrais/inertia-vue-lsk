@@ -16,7 +16,7 @@ class MiddlewareRegistrar
 	{
 		$middleware->statefulApi();
 
-		$middleware->validateCsrfTokens(except: [
+		$middleware->preventRequestForgery(except: [
 			'api/mobile/v1/social-auth/*/oauth/callback',
 		]);
 

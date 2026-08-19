@@ -1,33 +1,20 @@
 import Bootstrap from "@/js/bootstrap/bootstrap";
-import { createApp, createSSRApp, h } from "vue";
-import { createInertiaApp } from '@inertiajs/vue3';
+import { createInertiaApp, Link } from '@inertiajs/vue3';
 import DefaultLayout from "@/js/layouts/DefaultLayout.vue";
-import { Link } from '@inertiajs/vue3';
 import isServer from "@/js/plugins/isServer.js";
 
-Bootstrap.setupAxios();
-
 createInertiaApp({
-	resolve: (name) => {
-		const pages = import.meta.glob('./pages/**/*.vue', { eager: true })
-		const page = pages[`./pages/${name}.vue`];
+	pages: './pages',
+	layout: () => DefaultLayout,
 
-		page.default.layout = page.default.layout || DefaultLayout;
-
-		return page;
-	},
-
-	setup({ el, App, props, plugin }) {
-		const appOptions = { render: () => h(App, props) };
-		const app = import.meta.env.VITE_SSR ?
-			createSSRApp(appOptions) :
-			createApp(appOptions);
+	withApp(app, { ssr }) {
+		if (!ssr) {
+			Bootstrap.setupAxios();
+		}
 
 		Bootstrap.setupLibraries(app);
 
-		app.use(plugin)
-			.use(isServer)
-			.component('AppLink', Link)
-			.mount(el);
+		app.use(isServer)
+			.component('AppLink', Link);
 	}
 });

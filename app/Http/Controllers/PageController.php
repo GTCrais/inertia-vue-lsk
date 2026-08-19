@@ -12,14 +12,12 @@ class PageController extends Controller
 	{
 		if ($request->routeIs('user-account.show')) {
 			if ($request->input('verified') == 1) {
-				session()->flash('emailVerified');
+				Inertia::flash('emailVerified', true);
 
 				return redirect()->route('user-account.show');
 			}
 
-			return Inertia::render('UserAccount', [
-				'emailVerified' => session('emailVerified')
-			]);
+			return Inertia::render('UserAccount');
 		}
 
 		if (!$slug) {

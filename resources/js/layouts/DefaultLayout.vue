@@ -22,6 +22,7 @@
 	import AppHead from "@/js/components/AppHead.vue";
 	import AppHeader from "@/js/components/AppHeader.vue";
 	import AppFooter from "@/js/components/AppFooter.vue";
+	import { router } from "@inertiajs/vue3";
 
 	export default {
 		components: {
@@ -30,37 +31,34 @@
 
 		props: {
 			user: Object,
-			metadata: Object,
-			sessionExpired: {
-				default: false
-			},
-			tooManyRequests: {
-				default: false
-			}
+			metadata: Object
 		},
 
 		data: function () {
 			return {
 				toastTimeout: null,
-				toastMessage: false
+				toastMessage: false,
+				removeFlashListener: null
 			}
 		},
 
 		mounted() {
+			// Fires on every response that carries flash data, including the initial page load
+			this.removeFlashListener = router.on('flash', (event) => {
+				const flash = event.detail.flash;
 
-		},
-
-		watch: {
-			sessionExpired: function(val) {
-				if (val) {
+				if (flash.sessionExpired) {
 					this.toast('Your session has expired. Please try again.');
 				}
-			},
-			tooManyRequests: function(val) {
-				if (val) {
+
+				if (flash.tooManyRequests) {
 					this.toast(this.tooManyRequestsMessage);
 				}
-			}
+			});
+		},
+
+		unmounted() {
+			this.removeFlashListener?.();
 		},
 
 		methods: {

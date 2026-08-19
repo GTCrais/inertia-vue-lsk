@@ -25,10 +25,7 @@
 		},
 
 		props: {
-			user: Object,
-			emailVerified: {
-				default: false
-			}
+			user: Object
 		},
 
 		data: function() {
@@ -38,7 +35,7 @@
 		},
 
 		mounted() {
-			if (this.emailVerified) {
+			if (this.$page.flash?.emailVerified) {
 				this.showEmailVerified = true;
 
 				setTimeout(() => {

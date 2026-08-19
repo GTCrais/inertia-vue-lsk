@@ -8,40 +8,22 @@ use Inertia\Inertia;
 
 class InertiaHelperService
 {
-	public static string $rootView = 'default';
-
 	public function __construct(
 	    protected ViewMetadataProviderService $viewMetadataProviderService,
 		protected NotificationService $notificationService
 	) {}
 
-	public function setRootView()
-	{
-		Inertia::setRootView(static::$rootView);
-	}
-
-	public function shareData(Request $request)
-	{
-		foreach ($this->getShareData($request) as $key => $value ) {
-			Inertia::share($key, $value);
-		}
-	}
-
 	public function getShareData(Request $request): array
 	{
-		$data = [
+		return [
 			'user' => $request->user() ? UserResource::make($request->user()) : null,
 			// We're using "fn()" here because we want the "toArray()" method to resolve just before the Response
 			// is sent back to the User, rather than resolving before metadata is actually updated
 			'metadata' => fn() => $this->viewMetadataProviderService->toArray(),
-			'sessionExpired' => session('sessionExpired'),
-			'tooManyRequests' => session('tooManyRequests')
+			// Deferred: fetched by the client in an automatic follow-up request after the page renders
+			'unreadNotificationCount' => Inertia::defer(
+				fn() => $this->notificationService->unreadNotificationsCount($request->user())
+			)
 		];
-
-		if (!$request->inertia()) {
-			$data['unreadNotificationCount'] = $this->notificationService->unreadNotificationsCount($request->user());
-		}
-
-		return $data;
 	}
 }

@@ -17,6 +17,10 @@ class AuthService
 	{
 		if (auth()->guard('web')->attempt($request->only('email', 'password'), remember: true)) {
 			\RateLimiter::clear('login');
+
+			if ($request->hasSession()) {
+				$request->session()->regenerate();
+			}
 		}
 
 		return (auth()->guard('web')->user() ?? null);

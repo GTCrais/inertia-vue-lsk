@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AuthSessionController extends Controller
 {
@@ -21,12 +22,14 @@ class AuthSessionController extends Controller
 			]);
 		}
 
-		return redirect()->route('pages.show', ['slug' => 'account']);
+		return redirect()->intended(route('pages.show', ['slug' => 'account']));
     }
 
 	public function destroy(Request $request)
 	{
 		$this->authService->logout($request);
+
+		Inertia::clearHistory();
 
 		return redirect()->route('pages.show');
 	}

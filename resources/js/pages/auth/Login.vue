@@ -84,9 +84,6 @@
 		},
 
 		props: {
-			authenticationExpired: {
-				default: null
-			},
 			message: null
 		},
 
@@ -122,7 +119,9 @@
 		},
 
 		computed: {
-
+			authenticationExpired() {
+				return this.$page.flash?.authenticationExpired;
+			}
 		}
 	}
 </script>

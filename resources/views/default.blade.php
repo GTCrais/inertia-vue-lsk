@@ -4,20 +4,20 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title inertia>{{ $metadataProvider->getTitle() }}</title>
+		<title data-inertia>{{ $metadataProvider->getTitle() }}</title>
 
 		<meta name="twitter:card" content="summary">
-		<meta name="twitter:title" content="{{ $metadataProvider->getTitle() }}" inertia />
-		<meta name="twitter:description" content="{{ $metadataProvider->getDescription() }}" inertia />
-		<meta name="twitter:image" content="{{ $metadataProvider->getTwitterImage() }}" inertia />
+		<meta name="twitter:title" content="{{ $metadataProvider->getTitle() }}" data-inertia />
+		<meta name="twitter:description" content="{{ $metadataProvider->getDescription() }}" data-inertia />
+		<meta name="twitter:image" content="{{ $metadataProvider->getTwitterImage() }}" data-inertia />
 
-		<meta name="description" content="{{ $metadataProvider->getDescription() }}" inertia />
-		<meta name="keywords" content="{{ $metadataProvider->getKeywords() }}" inertia />
-		<meta property="og:url" content="{{ url()->full() }}" inertia />
-		<meta property="og:type" content="{{ $metadataProvider->getOgType() }}" inertia />
-		<meta property="og:title" content="{{ $metadataProvider->getTitle() }}" inertia />
-		<meta property="og:description" content="{{ $metadataProvider->getDescription() }}" inertia />
-		<meta property="og:image" content="{{ $metadataProvider->getOgImage() }}" inertia />
+		<meta name="description" content="{{ $metadataProvider->getDescription() }}" data-inertia />
+		<meta name="keywords" content="{{ $metadataProvider->getKeywords() }}" data-inertia />
+		<meta property="og:url" content="{{ url()->full() }}" data-inertia />
+		<meta property="og:type" content="{{ $metadataProvider->getOgType() }}" data-inertia />
+		<meta property="og:title" content="{{ $metadataProvider->getTitle() }}" data-inertia />
+		<meta property="og:description" content="{{ $metadataProvider->getDescription() }}" data-inertia />
+		<meta property="og:image" content="{{ $metadataProvider->getOgImage() }}" data-inertia />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="800" />
 		<meta property="fb:app_id" content="{{ $facebookAppId }}" />

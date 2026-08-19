@@ -8,6 +8,8 @@ use App\Http\Requests\Auth\RegisteredUserStoreRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AuthService
 {
@@ -16,7 +18,7 @@ class AuthService
 	public function login(LoginRequest $request)
 	{
 		if (auth()->guard('web')->attempt($request->only('email', 'password'), remember: true)) {
-			\RateLimiter::clear('login');
+			RateLimiter::clear('login');
 
 			if ($request->hasSession()) {
 				$request->session()->regenerate();
@@ -42,16 +44,7 @@ class AuthService
 	{
 		$this->refreshSession($request);
 
-		try {
-			\DB::beginTransaction();
-
-			$user = User::create($request->validated());
-
-			\DB::commit();
-		} catch (\Throwable $e) {
-			\DB::rollBack();
-			throw $e;
-		}
+		$user = DB::transaction(fn() => User::create($request->validated()));
 
 		event(new Registered($user));
 

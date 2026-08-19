@@ -6,6 +6,7 @@ use App\Http\Concerns\RefreshesSession;
 use App\Http\Requests\Auth\SocialNetworkLoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -37,16 +38,7 @@ class SocialAuthService
 		if (!$user) {
 			$this->refreshSession($request);
 
-			try {
-				\DB::beginTransaction();
-
-				$user = $this->createUserFromSocialiteUser($socialiteUser, $socialNetwork);
-
-				\DB::commit();
-			} catch (\Throwable $e) {
-				\DB::rollBack();
-				throw $e;
-			}
+			$user = DB::transaction(fn() => $this->createUserFromSocialiteUser($socialiteUser, $socialNetwork));
 		} else {
 			$this->updateUserFromSocialiteUser($socialiteUser, $user, $socialNetwork);
 		}

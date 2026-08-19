@@ -32,7 +32,7 @@
 			}
 		},
 
-		data: function() {
+		data() {
 			return {
 
 			}

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\MobilePushNotificationTokenDestroyRequest;
 use App\Http\Requests\MobilePushNotificationTokenStoreRequest;
 use App\Models\MobileDevice;
+use Illuminate\Support\Facades\DB;
 
 class MobilePushNotificationTokenService
 {
@@ -14,9 +15,7 @@ class MobilePushNotificationTokenService
 
 	public function store(MobilePushNotificationTokenStoreRequest $request)
 	{
-		try {
-		    \DB::beginTransaction();
-
+		return DB::transaction(function () use ($request) {
 			$mobileDevice = MobileDevice::firstOrCreate(
 				['device_id' => $request->mobileDeviceId()]
 			);
@@ -28,13 +27,8 @@ class MobilePushNotificationTokenService
 
 			$this->mobileDeviceService->ensureMobileDeviceIsUnique($mobileDevice);
 
-		    \DB::commit();
-		} catch (\Throwable $e) {
-		    \DB::rollBack();
-		    throw $e;
-		}
-
-		return $mobileDevice;
+			return $mobileDevice;
+		});
 	}
 
 	public function destroy(MobilePushNotificationTokenDestroyRequest $request)

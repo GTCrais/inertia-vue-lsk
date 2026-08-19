@@ -84,7 +84,7 @@
 
 		},
 
-		data: function() {
+		data() {
 			return {
 				form: useForm({
 					email: null,

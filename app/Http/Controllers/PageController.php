@@ -11,7 +11,7 @@ class PageController extends Controller
 	public function show(Request $request, ViewMetadataProviderService $viewMetadataProviderService, $slug = null)
 	{
 		if ($request->routeIs('user-account.show')) {
-			if ($request->input('verified') == 1) {
+			if ($request->boolean('verified')) {
 				Inertia::flash('emailVerified', true);
 
 				return redirect()->route('user-account.show');

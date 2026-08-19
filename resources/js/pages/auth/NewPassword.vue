@@ -61,15 +61,14 @@
 			message: null
 		},
 
-		data: function() {
+		data() {
 			return {
 				form: useForm({
 					email: null,
 					password: null,
 					password_confirmation: null,
 					token: null
-				}),
-				showMessage: false
+				})
 			}
 		},
 
@@ -80,12 +79,6 @@
 
 		mounted() {
 
-		},
-
-		watch: {
-			message: function() {
-				this.showMessage = !!this.message;
-			}
 		},
 
 		methods: {
@@ -100,7 +93,9 @@
 		},
 
 		computed: {
-
+			showMessage() {
+				return !!this.message;
+			}
 		}
 	}
 </script>

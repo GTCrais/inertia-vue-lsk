@@ -42,23 +42,16 @@
 			success: null
 		},
 
-		data: function() {
+		data() {
 			return {
 				form: useForm({
 					email: null
-				}),
-				showMessage: false
+				})
 			}
 		},
 
 		mounted() {
 
-		},
-
-		watch: {
-			message: function() {
-				this.showMessage = !!this.message;
-			}
 		},
 
 		methods: {
@@ -73,7 +66,9 @@
 		},
 
 		computed: {
-
+			showMessage() {
+				return !!this.message;
+			}
 		}
 	}
 </script>

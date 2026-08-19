@@ -32,6 +32,7 @@
 
 <script>
 	import Container from "@/js/components/Container.vue";
+	import { router } from "@inertiajs/vue3";
 
 	export default {
 		components: {
@@ -42,7 +43,7 @@
 			user: Object
 		},
 
-		data: function() {
+		data() {
 			return {
 
 			}
@@ -54,7 +55,7 @@
 
 		methods: {
 			logout() {
-				this.$inertia.post('/logout');
+				router.post('/logout');
 			}
 		},
 

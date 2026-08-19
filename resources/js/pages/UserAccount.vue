@@ -28,7 +28,7 @@
 			user: Object
 		},
 
-		data: function() {
+		data() {
 			return {
 				showEmailVerified: false
 			}

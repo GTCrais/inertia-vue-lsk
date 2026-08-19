@@ -1,6 +1,7 @@
+import { router } from "@inertiajs/vue3";
 
 const SocialAuth = {
-	data: function() {
+	data() {
 		return {
 			authenticating: false,
 			googleAuth: null
@@ -23,7 +24,7 @@ const SocialAuth = {
 
 			this.getFacebookAccessToken()
 				.then((token) => {
-					this.$inertia.post(
+					router.post(
 						'/login/facebook',
 						{ token: token },
 						{
@@ -81,7 +82,7 @@ const SocialAuth = {
 		},
 
 		handleGoogleAccessTokenResponse(tokenResponse) {
-			this.$inertia.post(
+			router.post(
 				'/login/google',
 				{ token: tokenResponse.access_token },
 				{

@@ -24,7 +24,7 @@
 			}
 		},
 
-		data: function() {
+		data() {
 			return {
 
 			}

@@ -87,24 +87,17 @@
 			message: null
 		},
 
-		data: function() {
+		data() {
 			return {
 				form: useForm({
 					email: null,
 					password: null
-				}),
-				showMessage: !!this.message
+				})
 			}
 		},
 
 		mounted() {
 
-		},
-
-		watch: {
-			message: function() {
-				this.showMessage = !!this.message;
-			}
 		},
 
 		methods: {
@@ -119,6 +112,10 @@
 		},
 
 		computed: {
+			showMessage() {
+				return !!this.message;
+			},
+
 			authenticationExpired() {
 				return this.$page.flash?.authenticationExpired;
 			}

@@ -5,19 +5,20 @@ namespace App\Services;
 use App\Http\Requests\PasswordUpdateRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 
 class ProfileService
 {
 	public function update(ProfileUpdateRequest|PasswordUpdateRequest $request)
 	{
-		try {
-		    \DB::beginTransaction();
-
+		DB::transaction(function () use ($request) {
 			$data = $request->validated();
 
 			if ($data['password'] ?? null) {
-				$data['password'] = \Hash::make($data['password']);
+				$data['password'] = Hash::make($data['password']);
 			}
 
 			$previousAvatar = $request->user()->avatar;
@@ -30,13 +31,13 @@ class ProfileService
 			if ($avatarFile = ($data['avatar_file'] ?? null)) {
 				$encoded = Image::read($avatarFile)->cover(300, 300)->encode();
 
-				\Storage::put('avatars/' . $data['avatar'], $encoded);
+				Storage::put('avatars/' . $data['avatar'], $encoded);
 
 				$deletePreviousAvatar = true;
-			}  else if ($avatarBase64 = ($data['avatar_base64'] ?? null)) {
+			} else if ($avatarBase64 = ($data['avatar_base64'] ?? null)) {
 				$encoded = Image::read($avatarBase64)->cover(300, 300)->encode();
 
-				\Storage::put('avatars/' . $data['avatar'], $encoded);
+				Storage::put('avatars/' . $data['avatar'], $encoded);
 
 				$deletePreviousAvatar = true;
 			} else if ($data['avatar_remove'] ?? null) {
@@ -46,18 +47,13 @@ class ProfileService
 			if ($deletePreviousAvatar) {
 				$this->optionallyDeleteAvatar($previousAvatar);
 			}
-
-		    \DB::commit();
-		} catch (\Throwable $e) {
-		    \DB::rollBack();
-		    throw $e;
-		}
+		});
 	}
 
 	public function optionallyDeleteAvatar($filename)
 	{
-		if ($filename && \Storage::exists('avatars/' . $filename)) {
-			\Storage::delete('avatars/' . $filename);
+		if ($filename && Storage::exists('avatars/' . $filename)) {
+			Storage::delete('avatars/' . $filename);
 		}
 	}
 }

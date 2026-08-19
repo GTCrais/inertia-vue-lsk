@@ -34,7 +34,7 @@
 			metadata: Object
 		},
 
-		data: function () {
+		data() {
 			return {
 				toastTimeout: null,
 				toastMessage: false,

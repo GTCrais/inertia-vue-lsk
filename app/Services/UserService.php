@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserService
 {
@@ -12,17 +13,10 @@ class UserService
 
 	public function destroy(User $user)
 	{
-		try {
-		    \DB::beginTransaction();
-
-		    $user->notifications()->delete();
+		DB::transaction(function () use ($user) {
+			$user->notifications()->delete();
 			$this->profileService->optionallyDeleteAvatar($user->avatar);
 			$user->delete();
-
-		    \DB::commit();
-		} catch (\Throwable $e) {
-		    \DB::rollBack();
-		    throw $e;
-		}
+		});
 	}
 }

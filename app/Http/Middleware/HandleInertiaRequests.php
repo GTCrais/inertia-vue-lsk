@@ -42,9 +42,9 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return array_merge(
-			parent::share($request),
-			$this->inertiaHelperService->getShareData($request)
-		);
+        return [
+			...parent::share($request),
+			...$this->inertiaHelperService->getShareData($request)
+		];
     }
 }

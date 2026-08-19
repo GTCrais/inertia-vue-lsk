@@ -10,7 +10,7 @@
 
 		},
 
-		data: function() {
+		data() {
 			return {
 
 			}

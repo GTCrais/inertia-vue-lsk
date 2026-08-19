@@ -3,7 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import inertia from '@inertiajs/vite';
 import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
-import path from 'path';
+import path from 'node:path';
 
 export default defineConfig({
 	resolve: {

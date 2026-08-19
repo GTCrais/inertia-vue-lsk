@@ -15,7 +15,7 @@
 
 		},
 
-		data: function() {
+		data() {
 			return {
 
 			}

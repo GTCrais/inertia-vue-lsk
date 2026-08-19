@@ -30,7 +30,7 @@
 			metadata: Object,
 		},
 
-		data: function () {
+		data() {
 			return {
 				fullUrl: (this.$isBrowser ? window.location.href : '')
 			}

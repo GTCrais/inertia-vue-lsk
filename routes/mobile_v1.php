@@ -66,4 +66,4 @@ Route::prefix('social-auth/{socialNetwork}/oauth')
 		Route::match(['get', 'post'], '/callback', MobileSocialAuthCallbackController::class)->name('social-auth.callback');
 	});
 
-Route::middleware(['signed', 'throttle:emailVerification'])->get('/email/verificiraj/{id}/{hash}', VerifyEmailController::class)->name('verify-email.show');
+Route::middleware(['signed', 'throttle:emailVerification'])->get('/email/verify/{id}/{hash}', VerifyEmailController::class)->name('verify-email.show');

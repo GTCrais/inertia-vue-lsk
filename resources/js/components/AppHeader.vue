@@ -2,8 +2,8 @@
 	<header class="py-4 border-b border-b-gray-200">
 		<container>
 			<nav class="flex items-center justify-between">
-				<app-link href="/" prefetch>
-					YourApp
+				<app-link href="/" class="mr-6" prefetch>
+					<img src="/img/logos/app_logo.png" alt="" class="transition-[height] subpixel-antialiased" :class="scrolled ? ['h-[28px]'] : ['h-[28px] sm:h-[35px]']">
 				</app-link>
 
 				<div v-if="user">
@@ -45,17 +45,29 @@
 
 		data() {
 			return {
-
+				scrolled: false
 			}
 		},
 
 		mounted() {
+			window.addEventListener("scroll", this.handleScroll, { passive: true });
+		},
 
+		beforeUnmount() {
+			window.removeEventListener("scroll", this.handleScroll);
 		},
 
 		methods: {
 			logout() {
 				router.post('/logout');
+			},
+
+			handleScroll() {
+				if (window.scrollY > 90 && !this.scrolled) {
+					this.scrolled = true;
+				} else if (window.scrollY < 55 && this.scrolled) {
+					this.scrolled = false;
+				}
 			}
 		},
 

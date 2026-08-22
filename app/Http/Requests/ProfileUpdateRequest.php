@@ -52,11 +52,12 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $data = [
+        return [
+			'name' => ['required', 'string', 'max:150'],
 			'avatar_file' => ['nullable', 'image', 'max:20480'],
 			'avatar_base64' => ['nullable', 'string', function ($attribute, $value, $fail) {
 				try {
-					Image::read($value);
+					Image::decode($value);
 				} catch (\Exception) {
 					$fail('The avatar must be a valid image.');
 				}
@@ -64,7 +65,5 @@ class ProfileUpdateRequest extends FormRequest
 			'avatar_remove' => ['boolean'],
 			'avatar' => ['sometimes', 'nullable', 'string']
         ];
-
-		return $data;
     }
 }

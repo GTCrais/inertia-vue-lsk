@@ -1,35 +1,38 @@
 <template>
-	<container class="py-4 flex-grow flex justify-center items-center">
-		<div>
-			<div class="mb-6 text-xl">
-				Email successfully verified.
-			</div>
+	<container class="pt-10 pb-4">
+		<div class="m-auto w-3xl max-w-full">
+			<h1 class="mb-6 text-center text-2xl sm:text-3xl font-bold">
+				Email verification
+			</h1>
 
-			<div v-if="requestType === 'stateless'" class="mb-6 text-xl">
-				Please refresh the page in your mobile app.
-			</div>
+			<card>
+				<div class="py-6">
+					<div class="text-lg sm:text-xl text-center mb-6">
+						Email successfully verified.
+					</div>
 
-			<app-link href="/login"
-			   class="cursor-pointer rounded border border-gray-200 px-4 py-2 hover:border-gray-300 transition-colors"
-			>
-				Login
-			</app-link>
+					<div class="flex justify-center">
+						<app-button href="/login">
+							Login
+						</app-button>
+					</div>
+				</div>
+			</card>
 		</div>
 	</container>
 </template>
 
 <script>
 	import Container from "@/js/components/Container.vue";
+	import AppButton from "@/js/components/AppButton.vue";
 
 	export default {
 		components: {
-			Container
+			AppButton, Container
 		},
 
 		props: {
-		    requestType: {
-				default: 'stateful'
-			}
+			
 		},
 
 		data() {

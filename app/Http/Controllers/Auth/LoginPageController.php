@@ -9,8 +9,6 @@ class LoginPageController extends Controller
 {
 	public function show()
 	{
-		return Inertia::render('auth/Login', [
-			'message' => session('newPasswordMessage')
-		]);
+		return Inertia::render('auth/Login');
     }
 }

@@ -22,7 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'email_verified_at', 'password', 'avatar', 'facebook_id', 'google_id', 'apple_id'
     ];
 
     /**
@@ -33,6 +33,10 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+	protected $appends = [
+		'avatar_url'
+	];
 
     /**
      * Get the attributes that should be cast.
@@ -46,6 +50,20 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+	public function avatarUrl(): Attribute
+	{
+		return Attribute::make(
+			get: fn () => $this->avatar ? \Storage::url('avatars/' . $this->avatar) : '/img/misc/default_avatar.svg'
+		);
+	}
+
+	public function relativeAvatarPath(): Attribute
+	{
+		return Attribute::make(
+			get: fn() => $this->avatar ? 'storage/avatars/' . $this->avatar : null
+		);
+	}
 
 	public function plainTextToken(): Attribute
 	{

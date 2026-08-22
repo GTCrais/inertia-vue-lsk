@@ -15,6 +15,6 @@ class SocialAuthSessionController extends Controller
 	{
 		$socialAuthService->loginThroughWeb($request, $socialNetwork);
 
-		return redirect()->intended(route('user-account.show'));
+		return redirect()->intended(route('user.profile.show'));
     }
 }

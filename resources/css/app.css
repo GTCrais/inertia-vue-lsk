@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&display=swap');
+
 @import 'tailwindcss';
+@import 'vue-sonner/style.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,5 +9,73 @@
 @source '../**/*.js';
 
 @theme {
+  --font-inter: "inter", sans-serif;
+
   --color-facebook: #1877F2;
+  --color-primary-gray-700: #262C41;
+}
+
+body {
+  color: var(--color-primary-gray-700);
+  font-family: var(--font-inter), sans-serif;
+}
+
+a {
+  &:not(.retain-text-color) {
+    color: var(--color-sky-500);
+
+    &:hover {
+      color: var(--color-sky-400);
+    }
+  }
+
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  * {
+    cursor: pointer;
+  }
+}
+
+[data-sonner-toast][data-x-position='right'][data-mounted='false'] {
+  --y: translateX(24px);
+}
+
+[data-sonner-toast][data-x-position='right'][data-removed='true'][data-front='true'][data-swipe-out='false'] {
+  --y: translateX(24px);
+}
+
+@media (prefers-reduced-motion) {
+  [data-sonner-toast] {
+    transition: transform 400ms, opacity 400ms, height 400ms, box-shadow 200ms !important;
+  }
+
+  [data-sonner-toast] > * {
+    transition: opacity 400ms !important;
+  }
+
+  [data-sonner-toast][data-styled='true'] [data-button] {
+    transition: opacity 400ms, box-shadow 200ms !important;
+  }
+
+  [data-sonner-toast][data-styled='true'] [data-close-button] {
+    transition: opacity 100ms, background 200ms, border-color 200ms !important;
+  }
+
+  [data-sonner-toast][data-removed='true'][data-front='false'][data-swipe-out='false'][data-expanded='false'] {
+    transition: transform 500ms, opacity 200ms !important;
+  }
+
+  [data-sonner-toast][data-swiping='true'] {
+    transition: none !important;
+  }
+
+  .sonner-loading-bar {
+    animation: sonner-spin 1.2s linear infinite !important;
+  }
+
+  .sonner-loader {
+    transition: opacity 200ms, transform 200ms !important;
+  }
 }

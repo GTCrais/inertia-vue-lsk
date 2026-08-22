@@ -12,6 +12,6 @@ class RegisteredUserController extends Controller
 	{
 		$authService->register($request);
 
-		return redirect()->route('user-account.show');
+		return redirect()->route('user.profile.show');
     }
 }

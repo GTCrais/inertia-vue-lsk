@@ -43,10 +43,12 @@ class NewPasswordController extends Controller
 			]);
 		}
 
-		$redirect = ($status == Password::PASSWORD_RESET)
-			? redirect()->route('login.show')
-			: back();
+		if ($status == Password::PASSWORD_RESET) {
+			Inertia::flash('passwordReset', true);
 
-		return $redirect->with('newPasswordMessage', trans($status));
+			return redirect()->route('login.show');
+		}
+
+		return back()->with('newPasswordMessage', trans($status));
 	}
 }

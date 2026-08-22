@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Http\Requests\PasswordUpdateRequest;
 use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -27,15 +26,8 @@ class ProfileService
 			$request->user()->update($data);
 			$request->user()->refresh();
 
-			/** @var UploadedFile $avatarFile */
-			if ($avatarFile = ($data['avatar_file'] ?? null)) {
-				$encoded = Image::read($avatarFile)->cover(300, 300)->encode();
-
-				Storage::put('avatars/' . $data['avatar'], $encoded);
-
-				$deletePreviousAvatar = true;
-			} else if ($avatarBase64 = ($data['avatar_base64'] ?? null)) {
-				$encoded = Image::read($avatarBase64)->cover(300, 300)->encode();
+			if ($avatarSource = ($data['avatar_file'] ?? $data['avatar_base64'] ?? null)) {
+				$encoded = Image::decode($avatarSource)->cover(300, 300)->encode();
 
 				Storage::put('avatars/' . $data['avatar'], $encoded);
 

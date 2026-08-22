@@ -5,10 +5,6 @@
 				Your session has expired. Please log in again.
 			</div>
 
-			<div v-if="showMessage" class="text-xl mb-6">
-				{{ message }}
-			</div>
-
 			<div>
 				<a href="#"
 				   class="flex mb-6 w-full items-center justify-center gap-3 rounded-full px-3 py-2
@@ -84,7 +80,7 @@
 		},
 
 		props: {
-			message: null
+
 		},
 
 		data() {
@@ -112,10 +108,6 @@
 		},
 
 		computed: {
-			showMessage() {
-				return !!this.message;
-			},
-
 			authenticationExpired() {
 				return this.$page.flash?.authenticationExpired;
 			}

@@ -25,7 +25,7 @@ class MiddlewareRegistrar
 		$middleware->appendToGroup('api', HandleInertiaRequests::class);
 
 		$middleware->redirectGuestsTo(fn() => route('login.show'));
-		$middleware->redirectUsersTo(fn() => route('user-account.show'));
+		$middleware->redirectUsersTo(fn() => route('user.profile.show'));
 
 		$middleware->alias([
 			'throttleSuccessfulRequests' => ThrottleSuccessfulRequests::class,

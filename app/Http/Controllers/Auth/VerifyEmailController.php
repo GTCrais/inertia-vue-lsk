@@ -6,6 +6,9 @@ use App\Http\Controllers\Concerns\DetectsMobileDevice;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\VerifyEmailRequest;
 use App\Services\Auth\EmailVerificationService;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class VerifyEmailController extends Controller
 {
@@ -27,12 +30,14 @@ class VerifyEmailController extends Controller
 		}
 
 		if ($request->user()) {
-			return redirect()->intended('/account?verified=1');
+			Inertia::flash('verified', true);
+
+			return redirect()->route('user.profile.show');
 		}
 
-		session()->flash('emailVerified');
-		session()->flash('requestType', $request->requestType);
+		$token = Str::random(32);
+		Cache::put("email_verified:{$token}", true, now()->addMinutes(5));
 
-		return redirect()->route('email-verified.show');
+		return redirect()->route('email-verified.show', ['token' => $token]);
 	}
 }

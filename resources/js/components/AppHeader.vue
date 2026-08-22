@@ -7,8 +7,8 @@
 				</app-link>
 
 				<div v-if="user">
-					<app-link href="/account" class="mr-4" prefetch>
-						Account
+					<app-link href="/user/profile" class="mr-4" prefetch>
+						Profile
 					</app-link>
 
 					<a href="#" @click.prevent="logout">

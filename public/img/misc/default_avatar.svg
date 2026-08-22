@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="165" height="165" viewBox="0 0 165 165" role="img" aria-labelledby="title description">
+  <title id="title">Default user avatar</title>
+  <desc id="description">A neutral user silhouette on a soft gray circular background.</desc>
+
+  <defs>
+    <linearGradient id="background" x1="25" y1="15" x2="140" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <linearGradient id="silhouette" x1="82.5" y1="35" x2="82.5" y2="165" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#94A3B8"/>
+      <stop offset="1" stop-color="#64748B"/>
+    </linearGradient>
+    <clipPath id="avatar-circle">
+      <circle cx="82.5" cy="82.5" r="80.5"/>
+    </clipPath>
+  </defs>
+
+  <circle cx="82.5" cy="82.5" r="80.5" fill="url(#background)"/>
+
+  <g clip-path="url(#avatar-circle)" fill="url(#silhouette)">
+    <circle cx="82.5" cy="61" r="29"/>
+    <path d="M21 165c0-34 27.5-61.5 61.5-61.5S144 131 144 165H21Z"/>
+  </g>
+
+  <circle cx="82.5" cy="82.5" r="80.5" fill="none" stroke="#CBD5E1" stroke-width="4"/>
+</svg>

@@ -15,7 +15,10 @@ class ResetPassword extends LaravelResetPassword implements ShouldQueue
 	public $timeout = (2 * 60); // 2 minutes
 	public $failOnTimeout = true;
 
-	public bool $mobile;
+	public function __construct($token, public bool $mobile = false)
+	{
+		parent::__construct($token);
+	}
 
 	public function toMail($notifiable)
 	{

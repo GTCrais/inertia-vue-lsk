@@ -1,13 +1,13 @@
 <template>
 	<container class="pt-10 pb-4">
 		<div class="m-auto w-3xl max-w-full">
-			<h1 class="mb-6 text-center text-2xl sm:text-3xl font-bold">
+			<h1 class="mb-6 text-center text-xl sm:text-2xl font-bold">
 				Email verification
 			</h1>
 
 			<card>
 				<div class="py-6">
-					<div class="text-lg sm:text-xl text-center mb-6">
+					<div class="text-md sm:text-lg text-center mb-6">
 						Email successfully verified.
 					</div>
 
@@ -25,14 +25,15 @@
 <script>
 	import Container from "@/js/components/Container.vue";
 	import AppButton from "@/js/components/AppButton.vue";
+	import Card from "@/js/components/Card.vue";
 
 	export default {
 		components: {
-			AppButton, Container
+			Card, AppButton, Container
 		},
 
 		props: {
-			
+
 		},
 
 		data() {

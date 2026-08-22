@@ -21,9 +21,9 @@ class InertiaHelperService
 			// is sent back to the User, rather than resolving before metadata is actually updated
 			'metadata' => fn() => $this->viewMetadataProviderService->toArray(),
 			// Deferred: fetched by the client in an automatic follow-up request after the page renders
-			'unreadNotificationCount' => Inertia::defer(
-				fn() => $this->notificationService->unreadNotificationsCount($request->user())
-			)
+			'unreadNotificationCount' => $request->user()
+				? Inertia::defer(fn() => $this->notificationService->unreadNotificationsCount($request->user()))
+				: null
 		];
 	}
 }

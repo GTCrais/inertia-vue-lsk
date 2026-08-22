@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
+use Inertia\Support\Header;
 
 class EmailVerificationConfirmationController extends Controller
 {
@@ -19,7 +20,7 @@ class EmailVerificationConfirmationController extends Controller
 			return redirect()->route('email-verified.show');
 		}
 
-		if (session('emailVerified')) {
+		if (session('emailVerified') || $request->header(Header::PARTIAL_COMPONENT) === 'auth/EmailVerified') {
 			return Inertia::render('auth/EmailVerified');
 		}
 

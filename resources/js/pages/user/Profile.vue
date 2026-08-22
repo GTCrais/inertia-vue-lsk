@@ -12,7 +12,7 @@
 			<div>
 				<form @submit.prevent="updateProfile">
 					<div class="mb-6">
-						<label class="block font-semibold mb-2 text-sm">Avatar</label>
+						<app-label class="mb-2">Avatar</app-label>
 						<div class="flex flex-wrap items-start gap-4">
 							<div class="w-12 h-12 sm:w-20 sm:h-20 rounded-full overflow-hidden">
 								<img v-if="avatarPreviewSrc" :src="avatarPreviewSrc" alt="Avatar preview" class="w-full h-full object-cover"/>
@@ -49,12 +49,8 @@
 					</div>
 
 					<div class="mb-6">
-						<label for="name" class="block font-semibold text-sm">Name</label>
-
-						<input type="text" name="name" id="name" maxlength="150"
-							   class="block w-full rounded-lg text-sm border-0 py-2.5 px-3 placeholder:text-gray-400 outline-none ring-2 ring-inset ring-gray-100 focus:ring-3 focus:ring-gray-100"
-							   v-model="updateForm.name"
-						/>
+						<app-label for="name">Name</app-label>
+						<app-input type="text" name="name" id="name" maxlength="150" v-model="updateForm.name"></app-input>
 
 						<div class="text-xs text-red-500 -mb-4 pl-3 mt-1" v-if="updateForm.errors.name">
 							{{ updateForm.errors.name }}
@@ -62,16 +58,16 @@
 					</div>
 
 					<div class="mb-6">
-						<label for="profile-email" class="font-semibold mb-1 text-sm flex justify-between">
+						<app-label for="profile-email" class="flex justify-between">
 							<span>Email</span>
 							<verify-email-popup v-if="!user.email_verified_at"></verify-email-popup>
-						</label>
-						<input type="text" name="email" id="profile-email" maxlength="150"
-							   class="block w-full rounded-lg text-sm border-0 py-2.5 px-3 bg-gray-50 placeholder:text-gray-400 outline-none ring-2 ring-inset"
-							   :class="user.email_verified_at ? ['ring-gray-100'] : ['ring-red-300']"
-							   disabled="disabled"
-							   v-model="user.email"
-						/>
+						</app-label>
+						<app-input type="text" name="email" id="profile-email" maxlength="150"
+								   class="bg-gray-50"
+								   :class="user.email_verified_at ? 'ring-gray-100' : 'ring-red-300'"
+								   disabled="disabled"
+								   v-model="user.email"
+						></app-input>
 					</div>
 
 					<div class="flex items-center gap-x-2">
@@ -135,6 +131,8 @@
 	import DeleteAccountModal from "@/js/components/modals/DeleteAccountModal.vue";
 	import Card from "@/js/components/Card.vue";
 	import AppButton from "@/js/components/AppButton.vue";
+	import AppInput from "@/js/components/AppInput.vue";
+	import AppLabel from "@/js/components/AppLabel.vue";
 	import VerifyEmailPopup from "@/js/components/VerifyEmailPopup.vue";
 	import { useForm } from "@inertiajs/vue3";
 	import { toast } from "vue-sonner";
@@ -145,7 +143,7 @@
 		],
 
 		components: {
-			VerifyEmailPopup, AppButton, Card, DeleteAccountModal
+			VerifyEmailPopup, AppButton, AppInput, AppLabel, Card, DeleteAccountModal
 		},
 
 		props: {

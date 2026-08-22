@@ -57,7 +57,7 @@
 				const classes = [];
 
 				if (this.href) {
-					classes.push(...['inline-flex', 'items-center', 'justify-center']);
+					classes.push(...['retain-text-color', 'inline-flex', 'items-center', 'justify-center']);
 				}
 
 				if (this.disabled) {

@@ -25,6 +25,6 @@ class UserController extends Controller
 			return response()->json();
 		}
 
-		return redirect()->to('/');
+		return redirect('/');
     }
 }

@@ -1,58 +1,67 @@
 <template>
-	<container class="py-4 flex-grow flex justify-center items-center">
-		<div>
-			<div v-if="showMessage" class="text-red-500 text-xl mb-6">
-				{{ message }}
-			</div>
+	<container class="pt-10 pb-4">
+		<div class="m-auto w-fit max-w-full">
+			<h1 class="mb-6 text-center text-xl sm:text-2xl font-bold">
+				New password
+			</h1>
 
-			<form class="w-sm" @submit.prevent="submit">
-				<div class="w-full flex flex-col mb-6">
-					<label for="email">Email</label>
-					<input id="email" type="text" class="rounded border border-gray-200 px-4 py-2" v-model="form.email">
-
-					<div class="text-red-500 mt-1" v-if="form.errors.email">
-						{{ form.errors.email }}
+			<card>
+				<div class="py-6 m-auto w-sm max-w-full">
+					<div v-if="showMessage" class="text-red-500 text-xl mb-6">
+						{{ message }}
 					</div>
+
+					<form @submit.prevent="submit">
+						<div class="mb-6">
+							<app-label for="email">Email</app-label>
+							<app-input id="email" type="text" v-model="form.email"></app-input>
+
+							<div class="text-xs text-red-500 mt-1" v-if="form.errors.email">
+								{{ form.errors.email }}
+							</div>
+						</div>
+
+						<div class="mb-6">
+							<app-label for="password">Password</app-label>
+							<app-input id="password" type="password" v-model="form.password"></app-input>
+
+							<div class="text-xs text-red-500 mt-1" v-if="form.errors.password">
+								{{ form.errors.password }}
+							</div>
+						</div>
+
+						<div class="mb-6">
+							<app-label for="password_confirmation">Confirm password</app-label>
+							<app-input id="password_confirmation" type="password" v-model="form.password_confirmation"></app-input>
+
+							<div class="text-xs text-red-500 mt-1" v-if="form.errors.password_confirmation">
+								{{ form.errors.password_confirmation }}
+							</div>
+						</div>
+
+						<div class="flex justify-end">
+							<app-button type="submit" :disabled="form.processing">
+								Submit
+							</app-button>
+						</div>
+					</form>
 				</div>
-
-				<div class="w-full flex flex-col mb-6">
-					<label for="password">Password</label>
-					<input id="password" type="password" class="rounded border border-gray-200 px-4 py-2" v-model="form.password">
-
-					<div class="text-red-500 mt-1" v-if="form.errors.password">
-						{{ form.errors.password }}
-					</div>
-				</div>
-
-				<div class="w-full flex flex-col mb-6">
-					<label for="password">Password</label>
-					<input id="password" type="password" class="rounded border border-gray-200 px-4 py-2" v-model="form.password_confirmation">
-
-					<div class="text-red-500 mt-1" v-if="form.errors.password_confirmation">
-						{{ form.errors.password_confirmation }}
-					</div>
-				</div>
-
-				<div class="flex justify-end">
-					<button
-						type="submit"
-						class="cursor-pointer rounded border border-gray-200 px-4 py-2 hover:border-gray-300 transition-colors"
-					>
-						Submit
-					</button>
-				</div>
-			</form>
+			</card>
 		</div>
 	</container>
 </template>
 
 <script>
 	import Container from "@/js/components/Container.vue";
+	import AppButton from "@/js/components/AppButton.vue";
+	import AppInput from "@/js/components/AppInput.vue";
+	import AppLabel from "@/js/components/AppLabel.vue";
+	import Card from "@/js/components/Card.vue";
 	import { useForm } from "@inertiajs/vue3";
 
 	export default {
 		components: {
-			Container
+			AppButton, AppInput, AppLabel, Card, Container
 		},
 
 		props: {

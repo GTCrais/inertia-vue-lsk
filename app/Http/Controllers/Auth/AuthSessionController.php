@@ -22,7 +22,7 @@ class AuthSessionController extends Controller
 			]);
 		}
 
-		return redirect()->intended(route('pages.show', ['slug' => 'account']));
+		return redirect()->intended(route('user.profile.show'));
     }
 
 	public function destroy(Request $request)

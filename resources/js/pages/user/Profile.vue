@@ -204,9 +204,9 @@
 					return;
 				}
 
-				const max = 5 * 1024 * 1024;
+				const max = 20 * 1024 * 1024;
 				if (file.size > max) {
-					this.updateForm.setError('avatar_file', 'The image can be at most 5MB.');
+					this.updateForm.setError('avatar_file', 'The image can be at most 20MB.');
 					e.target.value = '';
 					return;
 				}

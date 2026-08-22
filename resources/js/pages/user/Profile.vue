@@ -39,7 +39,7 @@
 									</button>
 								</div>
 
-								<p class="mt-2 pl-1 text-xs text-gray-500">Max. 5MB</p>
+								<p class="mt-2 pl-1 text-xs text-gray-500">Max. 20MB</p>
 
 								<div class="text-xs text-red-500 mt-1" v-if="updateForm.errors.avatar_file">
 									{{ updateForm.errors.avatar_file }}

@@ -15,7 +15,7 @@ class EnsureMobileDeviceUniqueness
 		$response = $next($request);
 		$mobileDevice = null;
 
-		if ($mobileDeviceId = $request->mobileDeviceId) {
+		if ($mobileDeviceId = $request->mobileDeviceId()) {
 			$query = MobileDevice::query()->where('device_id', $mobileDeviceId)->orderByDesc('id');
 
 			if ($request->user()) {

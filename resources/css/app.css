@@ -71,6 +71,28 @@ a {
     transition: none !important;
   }
 
+  [data-sonner-toast][data-swipe-out='true'] {
+    animation-duration: 200ms !important;
+    animation-timing-function: ease-out !important;
+    animation-fill-mode: forwards !important;
+  }
+
+  [data-sonner-toast][data-swipe-out='true'][data-swipe-direction='left'] {
+    animation-name: swipe-out-left !important;
+  }
+
+  [data-sonner-toast][data-swipe-out='true'][data-swipe-direction='right'] {
+    animation-name: swipe-out-right !important;
+  }
+
+  [data-sonner-toast][data-swipe-out='true'][data-swipe-direction='up'] {
+    animation-name: swipe-out-up !important;
+  }
+
+  [data-sonner-toast][data-swipe-out='true'][data-swipe-direction='down'] {
+    animation-name: swipe-out-down !important;
+  }
+
   .sonner-loading-bar {
     animation: sonner-spin 1.2s linear infinite !important;
   }

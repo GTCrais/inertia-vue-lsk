@@ -13,13 +13,13 @@
 	</p>
 
 	<div class="with-bm">
-		<a class="button" href="{!! $verificationLink  !!}">VERIFY</a>
+		<a class="button" href="{{ $verificationLink }}">VERIFY</a>
 	</div>
 
 	<p class="break-all">
 		The button doesn't work? Try the verification link:<br>
-		<a href="{!! $verificationLink  !!}">
-			{!! $verificationLink  !!}
+		<a href="{{ $verificationLink }}">
+			{{ $verificationLink }}
 		</a>
 	</p>
 

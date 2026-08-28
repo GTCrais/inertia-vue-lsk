@@ -13,13 +13,13 @@
 	</p>
 
 	<div class="with-bm">
-		<a class="button" href="{!! $resetLink  !!}">RESET PASSWORD</a>
+		<a class="button" href="{{ $resetLink }}">RESET PASSWORD</a>
 	</div>
 
 	<p class="break-all">
 		The button doesn't work? Try the reset link:<br>
-		<a href="{!! $resetLink  !!}">
-			{!! $resetLink  !!}
+		<a href="{{ $resetLink }}">
+			{{ $resetLink }}
 		</a>
 	</p>
 

@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetRequestController;
-use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Mobile\V1\MobileAppDataController;
 use App\Http\Controllers\Mobile\V1\MobileAuthCheckController;
 use App\Http\Controllers\Mobile\V1\MobileAuthSessionController;
@@ -57,12 +56,10 @@ Route::middleware('requestType:mobileApp')->group(function () {
 	});
 });
 
-// Not wrappable — reached from an external browser context (OAuth redirects, email link click)
+// Not wrappable — reached from an external browser context (OAuth redirects)
 Route::prefix('social-auth/{socialNetwork}/oauth')
 	->where(['socialNetwork' => 'facebook|google|apple'])
 	->group(function () {
 		Route::get('/redirect', MobileSocialAuthRedirectController::class)->name('social-auth.redirect');
 		Route::match(['get', 'post'], '/callback', MobileSocialAuthCallbackController::class)->name('social-auth.callback');
 	});
-
-Route::middleware(['signed', 'throttle:emailVerification'])->get('/email/verify/{id}/{hash}', VerifyEmailController::class)->name('verify-email.show');

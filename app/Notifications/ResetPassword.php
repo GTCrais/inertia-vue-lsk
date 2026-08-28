@@ -2,13 +2,14 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Concerns\SerializesWithAppUrl;
 use Illuminate\Auth\Notifications\ResetPassword as LaravelResetPassword;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ResetPassword extends LaravelResetPassword implements ShouldQueue
 {
-	use Queueable;
+	use Queueable, SerializesWithAppUrl;
 
 	public $tries = 3;
 	public $retryAfter = 120;

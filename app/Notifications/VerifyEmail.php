@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Concerns\SerializesWithAppUrl;
 use Illuminate\Auth\Notifications\VerifyEmail as LaravelVerifyEmail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\URL;
 
 class VerifyEmail extends LaravelVerifyEmail implements ShouldQueue
 {
-	use Queueable;
+	use Queueable, SerializesWithAppUrl;
 
 	public $tries = 3;
 	public $retryAfter = 120;

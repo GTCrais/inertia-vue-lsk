@@ -6,7 +6,6 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 
 class RateLimiterServiceProvider extends ServiceProvider
 {
@@ -23,12 +22,6 @@ class RateLimiterServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-		RateLimiter::for('login', function (Request $request) {
-			$throttleKey = Str::transliterate(Str::lower($request->input('email')) . '_' . $request->ip());
-
-			return Limit::perMinute(5)->by($throttleKey);
-		});
-
 		RateLimiter::for('socialLogin', function (Request $request) {
 			return Limit::perMinute(10)->by($request->ip() . '_social_login');
 		});
@@ -58,11 +51,11 @@ class RateLimiterServiceProvider extends ServiceProvider
 		});
 
 		RateLimiter::for('pushNotificationsTokenStore', function (Request $request) {
-			return Limit::perMinute(10)->by($request->mobileDeviceId() . '_' . $request->ip() . '_push_notifications_token_store');
+			return Limit::perMinute(10)->by($request->user()->id . '_push_notifications_token_store');
 		});
 
 		RateLimiter::for('pushNotificationsTokenDestroy', function (Request $request) {
-			return Limit::perMinute(6)->by($request->mobileDeviceId() . '_' . $request->ip() . '_push_notifications_token_destroy');
+			return Limit::perMinute(6)->by($request->user()->id . '_push_notifications_token_destroy');
 		});
     }
 }

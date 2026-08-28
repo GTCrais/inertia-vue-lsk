@@ -42,7 +42,7 @@ Out of the box this starter kit provides:
     - `SANCTUM_STATEFUL_DOMAINS`
     - Mailgun credentials, unless you're using some other mailer
     - Facebook, Google and/or Apple credentials, if you're going to be using sign in with social networks feature
-    - `MOBILE_APP_HEADER`, `MOBILE_APP_URI_SCHEME` and `MOBILE_APP_DEVICE_ID`, if you're going to be using the mobile app skeleton
+    - `MOBILE_APP_HEADER`, `MOBILE_APP_URI_SCHEME` and `MOBILE_APP_DEVICE_ID_HEADER`, if you're going to be using the mobile app skeleton
     - `FIREBASE_CREDENTIALS`, if you're going to be using FCM push notifications
     - If you want to use Inertia SSR: 
         - `npm run build` (builds the SSR bundle as well)
@@ -60,7 +60,7 @@ The kit ships with a skeleton for driving a companion mobile app:
 - Password reset and email verification resend reuse the web controllers, which respond with JSON when the request expects it
 - Social sign in (Facebook, Google, Apple): the app opens `social-auth/{network}/oauth/redirect` in a browser, the OAuth callback deep-links back into the app, and the app exchanges the received token for a Sanctum token at `social-auth/exchange-token`
 - Email deep-linking: verification and password reset emails sent for mobile app requests carry a `mobile=1` link parameter. Opened on a mobile device, the link serves an interstitial page that deep-links into the app via `MOBILE_APP_URI_SCHEME` (e.g. `yourapp://email-verified`) with a web fallback; opened on desktop, the regular web flow takes over
-- Push notifications are sent through FCM (`FIREBASE_CREDENTIALS`), with devices tracked by a device id header (`MOBILE_APP_DEVICE_ID`) that also scopes the push endpoint rate limits
+- Push notifications are sent through FCM (`FIREBASE_CREDENTIALS`), with devices tracked by a device id header (`MOBILE_APP_DEVICE_ID_HEADER`); the push token endpoints require authentication and are rate limited per user
 - Mobile-related configuration lives in `config/mobile.php`
 
 ### Things worth taking a look at

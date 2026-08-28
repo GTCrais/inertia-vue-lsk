@@ -36,7 +36,7 @@ class ProfileUpdateRequest extends FormRequest
 			]);
 		} else if ($file = $this->file('avatar_file')) {
 			$this->merge([
-				'avatar' => Uuid::uuid4()->toString() . '.' . $file->getClientOriginalExtension()
+				'avatar' => Uuid::uuid4()->toString() . '.' . $file->extension()
 			]);
 		} else if ($this->input('avatar_base64')) {
 			$this->merge([

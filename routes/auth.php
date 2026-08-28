@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['guest:sanctum'])->group(function () {
 	Route::get('/login', [LoginPageController::class, 'show'])->name('login.show');
-	Route::middleware(['throttle:login'])->post('/login', [AuthSessionController::class, 'store'])->name('auth-session.store');
+	Route::post('/login', [AuthSessionController::class, 'store'])->name('auth-session.store');
 	Route::middleware(['throttle:socialLogin'])->post('/login/{socialNetwork}', [SocialAuthSessionController::class, 'store'])->where('socialNetwork', 'facebook|google|apple')->name('social-auth-session.store');
 	Route::get('/register', [RegistrationPageController::class, 'show'])->name('registration.show');
 	Route::middleware(['throttle:register'])->post('/register', [RegisteredUserController::class, 'store'])->name('registration.store');

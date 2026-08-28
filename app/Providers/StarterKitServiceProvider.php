@@ -32,7 +32,9 @@ class StarterKitServiceProvider extends ServiceProvider
 		});
 
 		Request::macro('mobileDeviceId', function() {
-			return $this->header(config('mobile.deviceIdHeader'));
+			$header = config('mobile.deviceIdHeader');
+
+			return $header ? $this->header($header) : null;
 		});
 
 		Request::macro('mobileApp', function() {

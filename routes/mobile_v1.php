@@ -33,12 +33,11 @@ Route::middleware('requestType:mobileApp')->group(function () {
 
 	Route::middleware(['auth:sanctum'])->group(function () {
 		Route::post('/logout', [MobileAuthSessionController::class, 'destroy'])->name('auth.destroy');
+		Route::middleware(['throttle:pushNotificationsTokenStore'])->post('/push-notifications-token', [MobilePushNotificationTokenController::class, 'store'])->name('push-notifications-token.store');
+		Route::middleware(['throttle:pushNotificationsTokenDestroy'])->delete('/push-notifications-token', [MobilePushNotificationTokenController::class, 'destroy'])->name('push-notifications-token.destroy');
 	});
 
 	Route::post('/social-auth/exchange-token', MobileSocialAuthExchangeTokenController::class)->name('social-auth.exchange-token');
-
-	Route::middleware(['throttle:pushNotificationsTokenStore'])->post('/push-notifications-token', [MobilePushNotificationTokenController::class, 'store'])->name('push-notifications-token.store');
-	Route::middleware(['throttle:pushNotificationsTokenDestroy'])->delete('/push-notifications-token', [MobilePushNotificationTokenController::class, 'destroy'])->name('push-notifications-token.destroy');
 
 	Route::middleware(['auth:sanctum'])
 		->prefix('user')
@@ -62,7 +61,7 @@ Route::middleware('requestType:mobileApp')->group(function () {
 Route::prefix('social-auth/{socialNetwork}/oauth')
 	->where(['socialNetwork' => 'facebook|google|apple'])
 	->group(function () {
-		Route::middleware('useUrlVisitorUuid')->get('/redirect', MobileSocialAuthRedirectController::class)->name('social-auth.redirect');
+		Route::get('/redirect', MobileSocialAuthRedirectController::class)->name('social-auth.redirect');
 		Route::match(['get', 'post'], '/callback', MobileSocialAuthCallbackController::class)->name('social-auth.callback');
 	});
 

@@ -65,13 +65,6 @@ class User extends Authenticatable implements MustVerifyEmail
 		);
 	}
 
-	public function plainTextToken(): Attribute
-	{
-		return Attribute::make(
-			get: fn () => $this->currentAccessToken()?->plainTextToken
-		);
-	}
-
 	public function sendEmailVerificationNotification()
 	{
 		$this->notify(new VerifyEmail(request()->mobileApp()));

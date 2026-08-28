@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class ProfileService
 {
@@ -25,6 +26,14 @@ class ProfileService
 
 			$request->user()->update($data);
 			$request->user()->refresh();
+
+			if ($data['password'] ?? null) {
+				$currentToken = $request->user()->currentAccessToken();
+
+				$request->user()->tokens()
+					->when($currentToken instanceof PersonalAccessToken, fn ($query) => $query->whereKeyNot($currentToken->getKey()))
+					->delete();
+			}
 
 			if ($avatarSource = ($data['avatar_file'] ?? $data['avatar_base64'] ?? null)) {
 				$encoded = Image::decode($avatarSource)->cover(300, 300)->encode();

@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Http\Concerns\ValidatesMobileDeviceId;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MobileSocialAuthExchangeTokenRequest extends FormRequest
 {
+	use ValidatesMobileDeviceId;
+
     /**
      * Determine if the user is authorized to make this request.
      */

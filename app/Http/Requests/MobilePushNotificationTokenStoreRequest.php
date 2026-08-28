@@ -22,7 +22,7 @@ class MobilePushNotificationTokenStoreRequest extends FormRequest
     public function rules(): array
     {
 		return [
-			'device_id' => ['required', 'string'],
+			'device_id' => ['required', 'string', 'max:255'],
 			'token' => ['required', 'string']
 		];
     }

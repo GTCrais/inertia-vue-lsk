@@ -9,8 +9,8 @@ return new class extends Migration {
 	{
 		Schema::create('mobile_devices', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-			$table->string('device_id')->unique();
+			$table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+			$table->string('device_id')->index();
 			$table->string('push_notifications_token')->nullable();
 			$table->timestamp('logged_out_at')->nullable();
 			$table->timestamps();

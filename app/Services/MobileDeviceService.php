@@ -22,7 +22,10 @@ class MobileDeviceService
 
 	public function markAsLoggedOut(Request $request)
 	{
-		$this->mobileDevice($request)?->update(['logged_out_at' => now()]);
+		$this->mobileDevice($request)?->update([
+			'logged_out_at' => now(),
+			'push_notifications_token' => null
+		]);
 	}
 
 	public function syncLoginState(Request $request)

@@ -15,7 +15,7 @@ class MobileNotificationController extends Controller
 	public function index(Request $request)
 	{
 		return response()->json(
-			$this->notificationService->forNotificationsPage($request->persona(), forMobile: true)
+			$this->notificationService->forNotificationsPage($request->user(), forMobile: true)
 		);
     }
 }

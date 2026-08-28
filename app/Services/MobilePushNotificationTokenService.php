@@ -16,14 +16,14 @@ class MobilePushNotificationTokenService
 	public function store(MobilePushNotificationTokenStoreRequest $request)
 	{
 		return DB::transaction(function () use ($request) {
-			$mobileDevice = MobileDevice::firstOrCreate(
-				['device_id' => $request->mobileDeviceId()]
+			$mobileDevice = MobileDevice::updateOrCreate(
+				['device_id' => $request->mobileDeviceId()],
+				[
+					'user_id' => $request->user()->id,
+					'push_notifications_token' => $request->validated('token'),
+					'logged_out_at' => null
+				]
 			);
-
-			$mobileDevice->update([
-				'push_notifications_token' => $request->validated('token'),
-				'user_id' => $request->user()?->id
-			]);
 
 			$this->mobileDeviceService->ensureMobileDeviceIsUnique($mobileDevice);
 
@@ -34,6 +34,7 @@ class MobilePushNotificationTokenService
 	public function destroy(MobilePushNotificationTokenDestroyRequest $request)
 	{
 		MobileDevice::where('device_id', $request->mobileDeviceId())
+			->where('user_id', $request->user()->id)
 			->update(['push_notifications_token' => null]);
 	}
 }

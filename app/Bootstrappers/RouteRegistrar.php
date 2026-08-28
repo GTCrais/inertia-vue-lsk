@@ -2,7 +2,6 @@
 
 namespace App\Bootstrappers;
 
-use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 class RouteRegistrar
@@ -19,8 +18,6 @@ class RouteRegistrar
 
 		Route::middleware('api')
 			->group(base_path('routes/web.php'));
-
-		Broadcast::routes();
 	}
 
 	public static function channels()

@@ -8,10 +8,6 @@ createInertiaApp({
 	layout: () => DefaultLayout,
 
 	withApp(app, { ssr }) {
-		if (!ssr) {
-			Bootstrap.setupAxios();
-		}
-
 		Bootstrap.setupLibraries(app);
 
 		app.use(isServer)

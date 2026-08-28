@@ -13,6 +13,7 @@
 - Apple Socialite Provider
 - Intervention Image
 - FCM notification channel
+- Pusher PHP server
 - Laravel Debugbar
 - Predis
 
@@ -21,6 +22,7 @@ Out of the box this starter kit provides:
 - Login and registration functionalities using conventional email + password method with email confirmation, as well as Sign in with Facebook and Google (Apple is supported server-side)
 - Password reset functionality
 - Email verification for both logged-in and guest users - logged-in users land back on their profile, guests get a confirmation page gated by a one-shot token
+- Private broadcasting channels (Pusher): `/broadcasting/auth` runs under the `api` middleware group, so both web sessions and mobile bearer tokens can authorize
 - User account area with profile editing (name + avatar upload with preview), password update and account deletion
 - Toast notifications (vue-sonner) driven by Inertia flash data (`Inertia::flash()`) for one-time messages: email verified, password reset, expired session, rate limited
 - Reusable UI components (`resources/js/components`): `AppButton` (renders an Inertia `Link` when given an `href`), `AppInput`, `AppLabel`, `Card`, modals
@@ -46,6 +48,7 @@ Out of the box this starter kit provides:
     - Facebook, Google and/or Apple credentials, if you're going to be using sign in with social networks feature
     - `MOBILE_APP_NAME`, if you're going to be using the mobile app skeleton - `MOBILE_APP_HEADER`, `MOBILE_APP_URI_SCHEME` and `MOBILE_APP_DEVICE_ID_HEADER` are derived from it (see `config/mobile.php`) and can be overridden individually
     - `FIREBASE_CREDENTIALS`, if you're going to be using FCM push notifications
+    - `PUSHER_*` credentials, if you're going to be using broadcasting
     - If you want to use Inertia SSR: 
         - `npm run build` (builds the SSR bundle as well)
         - `php artisan inertia:start-ssr`
@@ -66,7 +69,8 @@ The kit ships with a skeleton for driving a companion mobile app:
 - Password reset and email verification resend reuse the web controllers, which respond with JSON when the request expects it
 - Social sign in (Facebook, Google, Apple): the app opens `social-auth/{network}/oauth/redirect` in a browser, the OAuth callback deep-links back into the app, and the app exchanges the received token for a Sanctum token at `social-auth/exchange-token`
 - Email deep-linking: verification and password reset emails sent for mobile app requests carry a `mobile=1` link parameter. Opened on a mobile device, the link serves an interstitial page that deep-links into the app via `MOBILE_APP_URI_SCHEME` (e.g. `yourapp://email-verified`) with a web fallback; opened on desktop, the regular web flow takes over
-- Push notifications are sent through FCM (`FIREBASE_CREDENTIALS`), with devices tracked by a device id header (`MOBILE_APP_DEVICE_ID_HEADER`); the push token endpoints require authentication and are rate limited per user
+- Multi-host friendly email links: queued verification and reset emails generate their links against the host the triggering request came in on (`app/Notifications/Concerns/SerializesWithAppUrl.php`), so serving the API on a second host - e.g. a Cloudflare tunnel so a simulator can reach your local backend - needs no extra configuration
+- Push notifications are sent through FCM (`FIREBASE_CREDENTIALS`), with devices tracked by a device id header (`MOBILE_APP_DEVICE_ID_HEADER`)
 - Mobile-related configuration lives in `config/mobile.php`
 
 ### Things worth taking a look at
@@ -74,14 +78,16 @@ The kit ships with a skeleton for driving a companion mobile app:
 - `app/Http/Middleware/SanctumMiddleware.php`
 - `app/Http/Middleware/ThrottleSuccessfulRequests.php` - drop-in replacement for the `throttle` middleware that only counts successful requests towards the rate limit
 - `app/Http/Middleware/EnsureMobileDeviceUniqueness.php` - keeps mobile device records unique per user; aliased as `ensureMobileDeviceUniqueness` but not attached to any route out of the box
-- `app/Providers/AppServiceProvider.php` - registers the rate limiters, the FCM failure listener (invalid push notification tokens get cleared), the Apple Socialite provider, the morph map and the shared view data
+- `app/Providers/AppServiceProvider.php` - registers the rate limiters, the FCM failure listener (`app/Listeners/HandleFailedFcmNotification.php` - clears invalid tokens, retries transient failures), the Apple Socialite provider, the morph map and the shared view data
 - `app/Providers/RequestMacroServiceProvider.php` - defines the `stateful()`, `stateless()`, `mobileApp()` and `mobileDeviceId()` request macros used throughout the auth flows
 - `app/Services/RateLimiterService.php` - all of the named rate limiters used across the routes, the key-hashing policy for the `throttle` middleware, and the login throttle key that gets cleared on successful login
 - `app/Http/Helpers/AppResponse.php` - responds with an Inertia page for frontend requests and plain JSON for stateless ones
 - `app/Services/InertiaHelperService.php` used in `app/Http/Middleware/HandleInertiaRequests.php`
 - `app/Services/ViewMetadataProviderService.php`, used in `app/Services/InertiaHelperService.php`, `app/Http/Controllers/PageController.php` and `resources/views/default.blade.php`
+- `app/Notifications/Concerns/SerializesWithAppUrl.php` - carries the requesting host through queue serialization so emailed links point at the right origin
 - `resources/js/layouts/DefaultLayout.vue` - global `flash` event listener that turns Inertia flash data into toasts
 - `resources/js/mixins/helper.js` - the `cn()` class-merging helper (clsx + tailwind-merge) used by the UI components
+- `resources/js/lib/http.js` - pre-configured axios instance (credentials + XSRF token) for direct first-party HTTP calls; Inertia handles its own requests, and nothing is registered on `window` or the global axios defaults
 
 ### License
 

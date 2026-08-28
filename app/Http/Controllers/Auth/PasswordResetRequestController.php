@@ -20,18 +20,20 @@ class PasswordResetRequestController extends Controller
 
 	public function store(PasswordResetRequestStoreRequest $request, PasswordResetService $passwordResetService)
 	{
-		$status = $passwordResetService->sendResetLink($request->only('email'));
+		$passwordResetService->sendResetLink($request->only('email'));
+
+		$message = 'If an account with that email address exists, a password reset link has been sent.';
 
 		if ($request->wantsJson()) {
 			return response()->json([
-				'success' => ($status === Password::RESET_LINK_SENT),
-				'message' => trans($status)
+				'success' => true,
+				'message' => $message
 			]);
 		}
 
 		return back()->with([
-			'passwordResetRequestStatus' => $status,
-			'passwordResetRequestMessage' => trans($status)
+			'passwordResetRequestStatus' => Password::RESET_LINK_SENT,
+			'passwordResetRequestMessage' => $message
 		]);
 	}
 }

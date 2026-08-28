@@ -33,16 +33,18 @@ Out of the box this starter kit provides:
 - Node.js >= 20  
 - Redis (default driver for sessions, cache and queues)
 - Laravel queues (for emails)
+- Laravel scheduler (daily pruning of expired/inactive API tokens and old failed jobs)
 
 ### Setup
 - In `.env` fill out:
     - `APP_URL`
     - `GRACEFULLY_HANDLE_EXCEPTIONS` - boolean. If set to `true` you will get nice error pages instead of the default Inertia exception modal
     - `SESSION_DOMAIN`
+    - `SESSION_SECURE_COOKIE` - defaults to `true` (session cookie is only sent over HTTPS); set to `false` if serving over plain HTTP
     - `SANCTUM_STATEFUL_DOMAINS`
     - Mailgun credentials, unless you're using some other mailer
     - Facebook, Google and/or Apple credentials, if you're going to be using sign in with social networks feature
-    - `MOBILE_APP_HEADER`, `MOBILE_APP_URI_SCHEME` and `MOBILE_APP_DEVICE_ID_HEADER`, if you're going to be using the mobile app skeleton
+    - `MOBILE_APP_NAME`, if you're going to be using the mobile app skeleton - `MOBILE_APP_HEADER`, `MOBILE_APP_URI_SCHEME` and `MOBILE_APP_DEVICE_ID_HEADER` are derived from it (see `config/mobile.php`) and can be overridden individually
     - `FIREBASE_CREDENTIALS`, if you're going to be using FCM push notifications
     - If you want to use Inertia SSR: 
         - `npm run build` (builds the SSR bundle as well)
@@ -51,10 +53,14 @@ Out of the box this starter kit provides:
 
 - Start a queue worker - `php artisan queue:work`. Mail, broadcast and push notification jobs can be routed to dedicated queues via `QUEUE_MAIL`, `QUEUE_BROADCAST` and `QUEUE_PUSH_NOTIFICATIONS`
 
+- Run the scheduler (`php artisan schedule:work` locally, or a cron entry for `schedule:run` in production) - it prunes expired and inactive Sanctum tokens and old failed jobs daily (`app/Bootstrappers/ScheduleRegistrar.php`)
+
 ### Mobile app support
 The kit ships with a skeleton for driving a companion mobile app:
 
 - A versioned REST API mounted at `/api/mobile/v1` (`routes/mobile_v1.php`, registered in `app/Bootstrappers/RouteRegistrar.php`), authenticated with Sanctum bearer tokens
+- Tokens are per-device: named by the device id header (required for login, registration, auth checks and social token exchange), replaced on each login and rotated by `/auth/check` once older than the rotation window, with a short grace period for the replaced token. Windows are configurable in `config/mobile.php`. The app should overwrite its stored token only when an auth response contains a `plain_text_token`
+- Token hygiene: tokens expire after 30 days without rotation (`SANCTUM_TOKEN_EXPIRATION`, set to `null` for no expiry), tokens unused for a year are pruned daily, and changing or resetting the password revokes the user's other tokens
 - Mobile app requests are recognized by a custom header (`MOBILE_APP_HEADER`). The `requestType:mobileApp` middleware hides the API (404) from callers without it, and the `mobileApp()`, `stateless()` and `mobileDeviceId()` request macros are available throughout the app
 - Endpoints for app bootstrap data, registration, login/logout, auth checks, notifications (list + unread count), push notification token registration and account deletion
 - Password reset and email verification resend reuse the web controllers, which respond with JSON when the request expects it
@@ -68,8 +74,9 @@ The kit ships with a skeleton for driving a companion mobile app:
 - `app/Http/Middleware/SanctumMiddleware.php`
 - `app/Http/Middleware/ThrottleSuccessfulRequests.php` - drop-in replacement for the `throttle` middleware that only counts successful requests towards the rate limit
 - `app/Http/Middleware/EnsureMobileDeviceUniqueness.php` - keeps mobile device records unique per user; aliased as `ensureMobileDeviceUniqueness` but not attached to any route out of the box
-- `app/Providers/StarterKitServiceProvider.php` - defines the `stateful()`, `stateless()` and `mobileApp()` request macros used throughout the auth flows
-- `app/Providers/RateLimiterServiceProvider.php` - all of the named rate limiters used across the routes
+- `app/Providers/AppServiceProvider.php` - registers the rate limiters, the FCM failure listener (invalid push notification tokens get cleared), the Apple Socialite provider, the morph map and the shared view data
+- `app/Providers/RequestMacroServiceProvider.php` - defines the `stateful()`, `stateless()`, `mobileApp()` and `mobileDeviceId()` request macros used throughout the auth flows
+- `app/Services/RateLimiterService.php` - all of the named rate limiters used across the routes, the key-hashing policy for the `throttle` middleware, and the login throttle key that gets cleared on successful login
 - `app/Http/Helpers/AppResponse.php` - responds with an Inertia page for frontend requests and plain JSON for stateless ones
 - `app/Services/InertiaHelperService.php` used in `app/Http/Middleware/HandleInertiaRequests.php`
 - `app/Services/ViewMetadataProviderService.php`, used in `app/Services/InertiaHelperService.php`, `app/Http/Controllers/PageController.php` and `resources/views/default.blade.php`

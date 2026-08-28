@@ -1,27 +1,38 @@
 <?php
 
-namespace App\Providers;
+namespace App\Services;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
-class RateLimiterServiceProvider extends ServiceProvider
+class RateLimiterService
 {
-    /**
-     * Register services.
-     */
-    public function register(): void
-    {
-        //
-    }
+	protected static $shouldHashKeys = true;
 
-    /**
-     * Bootstrap services.
-     */
-    public function boot(): void
-    {
+	public function loginKey(Request $request, $named = false, $optionallyHashed = false)
+	{
+		$key = Str::transliterate(Str::lower($request->input('email')) . '_' . $request->ip());
+
+		if (!$named) {
+			return $key;
+		}
+
+		return ($optionallyHashed && static::$shouldHashKeys)
+			? md5('login' . $key)
+			: 'login:' . $key;
+	}
+
+	public function registerLimiters()
+	{
+		ThrottleRequests::shouldHashKeys(static::$shouldHashKeys);
+
+		RateLimiter::for('login', function (Request $request) {
+			return Limit::perMinute(5)->by($this->loginKey($request));
+		});
+
 		RateLimiter::for('socialLogin', function (Request $request) {
 			return Limit::perMinute(10)->by($request->ip() . '_social_login');
 		});
@@ -57,5 +68,5 @@ class RateLimiterServiceProvider extends ServiceProvider
 		RateLimiter::for('pushNotificationsTokenDestroy', function (Request $request) {
 			return Limit::perMinute(6)->by($request->user()->id . '_push_notifications_token_destroy');
 		});
-    }
+	}
 }

@@ -6,44 +6,34 @@ use App\Http\Concerns\RefreshesSession;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisteredUserStoreRequest;
 use App\Models\User;
+use App\Services\RateLimiterService;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Str;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthService
 {
 	use RefreshesSession;
 
+	public function __construct(
+	    protected RateLimiterService $rateLimiterService
+	) {}
+
 	public function login(LoginRequest $request)
 	{
-		$throttleKey = $this->loginThrottleKey($request);
-
-		if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
-			throw new ThrottleRequestsException('Too Many Attempts.', null, [
-				'Retry-After' => RateLimiter::availableIn($throttleKey)
-			]);
-		}
-
 		if (auth()->guard('web')->attempt($request->only('email', 'password'), remember: true)) {
-			RateLimiter::clear($throttleKey);
+			RateLimiter::clear(
+				$this->rateLimiterService->loginKey($request, named: true, optionallyHashed: true)
+			);
 
 			if ($request->hasSession()) {
 				$request->session()->regenerate();
 			}
-		} else {
-			RateLimiter::hit($throttleKey);
 		}
 
 		return (auth()->guard('web')->user() ?? null);
-	}
-
-	protected function loginThrottleKey(LoginRequest $request)
-	{
-		return 'login_' . Str::transliterate(Str::lower($request->input('email')) . '_' . $request->ip());
 	}
 
 	public function logout(Request $request)

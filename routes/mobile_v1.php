@@ -27,7 +27,7 @@ Route::middleware('requestType:mobileApp')->group(function () {
 	Route::post('/auth/user', MobileAuthUserController::class)->name('auth.user');
 
 	Route::middleware(['guest:sanctum'])->group(function () {
-		Route::post('/login', [MobileAuthSessionController::class, 'store'])->name('auth.store');
+		Route::middleware(['throttle:login'])->post('/login', [MobileAuthSessionController::class, 'store'])->name('auth.store');
 		Route::middleware(['throttle:register'])->post('/register', [MobileRegisteredUserController::class, 'store'])->name('registration.store');
 	});
 

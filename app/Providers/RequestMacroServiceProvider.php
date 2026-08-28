@@ -3,19 +3,11 @@
 namespace App\Providers;
 
 use App\Http\Middleware\SanctumMiddleware;
-use App\Services\ViewMetadataProviderService;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
-class StarterKitServiceProvider extends ServiceProvider
+class RequestMacroServiceProvider extends ServiceProvider
 {
-	public $singletons = [
-		ViewMetadataProviderService::class => ViewMetadataProviderService::class
-	];
-
     /**
      * Register services.
 	 *
@@ -56,12 +48,8 @@ class StarterKitServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(ViewMetadataProviderService $viewMetadataProviderService): void
-    {
-		View::share('metadataProvider', $viewMetadataProviderService);
-		View::share('facebookAppId', config('services.facebook.client_id'));
+    public function boot(): void
+	{
 
-		JsonResource::withoutWrapping();
-		ResourceCollection::withoutWrapping();
     }
 }

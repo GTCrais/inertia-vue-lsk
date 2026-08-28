@@ -22,7 +22,7 @@ Route::middleware(['guest:sanctum'])->group(function () {
 	Route::get('/forgot-password', [PasswordResetRequestController::class, 'create'])->name('password-reset-request.create');
 	Route::middleware(['throttle:passwordReset'])->post('/forgot-password', [PasswordResetRequestController::class, 'store'])->name('password-reset-request.store');
 	Route::get('/new-password', [NewPasswordController::class, 'create'])->name('new-password.create');
-	Route::post('/new-password', [NewPasswordController::class, 'store'])->name('new-password.store');
+	Route::middleware(['throttle:newPassword'])->post('/new-password', [NewPasswordController::class, 'store'])->name('new-password.store');
 });
 
 Route::middleware(['signed', 'throttle:emailVerification'])->get('/email/verify/{id}/{hash}', VerifyEmailController::class)->name('verify-email.show');

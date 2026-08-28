@@ -45,6 +45,14 @@ class RateLimiterService
 			return Limit::perMinute(3)->by($request->ip() . '_password_reset');
 		});
 
+		RateLimiter::for('newPassword', function (Request $request) {
+			return Limit::perMinute(6)->by($request->ip() . '_new_password');
+		});
+
+		RateLimiter::for('socialTokenExchange', function (Request $request) {
+			return Limit::perMinute(10)->by($request->ip() . '_social_token_exchange');
+		});
+
 		RateLimiter::for('emailVerificationNotification', function (Request $request) {
 			return Limit::perMinute(2)->by($request->user()->id . '_email_verification_notification');
 		});

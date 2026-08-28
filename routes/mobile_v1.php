@@ -19,39 +19,30 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('requestType:mobileApp')->group(function () {
 	Route::get('/app-data', MobileAppDataController::class)->name('app-data');
-	Route::get('/notifications', [MobileNotificationController::class, 'index'])->name('notification.index');
-	Route::get('/notifications/count', MobileNotificationCountController::class)->name('notification.count');
 
 	Route::post('/auth/check', MobileAuthCheckController::class)->name('auth.check');
 	Route::post('/auth/user', MobileAuthUserController::class)->name('auth.user');
 
+	Route::middleware(['throttle:socialTokenExchange'])->post('/social-auth/exchange-token', MobileSocialAuthExchangeTokenController::class)->name('social-auth.exchange-token');
+
 	Route::middleware(['guest:sanctum'])->group(function () {
 		Route::middleware(['throttle:login'])->post('/login', [MobileAuthSessionController::class, 'store'])->name('auth.store');
 		Route::middleware(['throttle:register'])->post('/register', [MobileRegisteredUserController::class, 'store'])->name('registration.store');
+
+		// Shared controllers (auth.php)
+		Route::middleware(['throttle:passwordReset'])->post('/forgot-password', [PasswordResetRequestController::class, 'store'])->name('password-reset-request.store');
+		Route::middleware(['throttle:newPassword'])->post('/new-password', [NewPasswordController::class, 'store'])->name('new-password.store');
 	});
 
 	Route::middleware(['auth:sanctum'])->group(function () {
 		Route::post('/logout', [MobileAuthSessionController::class, 'destroy'])->name('auth.destroy');
+		Route::get('/notifications', [MobileNotificationController::class, 'index'])->name('notification.index');
+		Route::get('/notifications/count', MobileNotificationCountController::class)->name('notification.count');
 		Route::middleware(['throttle:pushNotificationsTokenStore'])->post('/push-notifications-token', [MobilePushNotificationTokenController::class, 'store'])->name('push-notifications-token.store');
 		Route::middleware(['throttle:pushNotificationsTokenDestroy'])->delete('/push-notifications-token', [MobilePushNotificationTokenController::class, 'destroy'])->name('push-notifications-token.destroy');
-	});
+		Route::delete('/user', [UserController::class, 'destroy'])->name('user.destroy');
 
-	Route::post('/social-auth/exchange-token', MobileSocialAuthExchangeTokenController::class)->name('social-auth.exchange-token');
-
-	Route::middleware(['auth:sanctum'])
-		->prefix('user')
-		->name('user.')
-		->group(function () {
-			Route::delete('/', [UserController::class, 'destroy'])->name('user.destroy');
-		});
-
-	// Shared controllers (auth.php)
-	Route::middleware(['guest:sanctum'])->group(function () {
-		Route::middleware(['throttle:passwordReset'])->post('/forgot-password', [PasswordResetRequestController::class, 'store'])->name('password-reset-request.store');
-		Route::post('/new-password', [NewPasswordController::class, 'store'])->name('new-password.store');
-	});
-
-	Route::middleware(['auth:sanctum'])->group(function () {
+		// Shared controllers (auth.php)
 		Route::middleware(['throttleSuccessfulRequests:emailVerificationNotification'])->post('/email-verification-notification', [EmailVerificationNotificationController::class, 'store'])->name('email-verification-notification.store');
 	});
 });

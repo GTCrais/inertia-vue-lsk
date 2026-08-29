@@ -4,8 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
@@ -24,7 +22,7 @@ class ThrottleSuccessfulRequests extends ThrottleRequests
 			}
 		}
 
-		/** @var Response|RedirectResponse $response */
+		/** @var SymfonyResponse $response */
 		$response = $next($request);
 		$requestIsSuccessful = $this->responseIsSuccessful($response);
 
@@ -44,7 +42,7 @@ class ThrottleSuccessfulRequests extends ThrottleRequests
 		return $response;
 	}
 
-	protected function responseIsSuccessful(Response|RedirectResponse $response)
+	protected function responseIsSuccessful(SymfonyResponse $response): bool
 	{
 		if (property_exists($response, 'exception') && $response->exception) {
 			return false;

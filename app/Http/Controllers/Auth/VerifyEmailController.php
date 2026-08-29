@@ -19,9 +19,12 @@ class VerifyEmailController extends Controller
 		$emailVerificationService->verify($request);
 
 		if ($this->isMobileDevice($request) && $request->query('mobile')) {
+			$token = Str::random(32);
+			Cache::put("email_verified:{$token}", true, now()->addMinutes(5));
+
 			return view('auth.mobile-redirect', [
 				'appUrl' => config('mobile.uriScheme') . '://email-verified',
-				'fallbackUrl' => config('app.url')
+				'fallbackUrl' => route('email-verified.show', ['token' => $token])
 			]);
 		}
 

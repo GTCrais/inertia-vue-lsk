@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting...</title>
+    <title>Continue in the app</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600&display=swap" rel="stylesheet">
@@ -58,16 +58,26 @@
         h1 {
             font-size: 1.25rem;
             color: #333;
-            margin-bottom: 8px;
+            margin-bottom: 20px;
         }
 
         p {
             color: #666;
             font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        .app-button {
+            display: inline-block;
+            background: #0ea5e9;
+            color: #fff;
+            font-weight: 600;
+            padding: 12px 32px;
+            border-radius: 8px;
+            text-decoration: none;
         }
 
         .fallback-link {
-            margin-top: 30px;
             color: #0ea5e9;
             text-decoration: none;
         }
@@ -82,14 +92,14 @@
     </style>
 </head>
 <body>
-    <div class="spinner"></div>
-    <h1 id="title" class="hidden">Redirecting...</h1>
-    <p id="message" class="hidden">If the mobile app doesn't open, <a href="{{ $fallbackUrl }}" class="fallback-link">continue in browser</a></p>
+    <div id="spinner" class="spinner"></div>
+    <h1 id="title" class="hidden">Continue in the app</h1>
+    <a id="open-app" href="{{ $appUrl }}" class="app-button hidden">Open app</a>
+    <p id="message" class="hidden">If the app doesn't open, <a href="{{ $fallbackUrl }}" class="fallback-link">continue in browser</a></p>
 
     <script>
         (function() {
             const appLink = @json($appUrl);
-            const fallback = @json($fallbackUrl);
 
             let hidden = false;
 
@@ -99,23 +109,20 @@
                 }
             });
 
-            // Try opening the app
+            // Try opening the app automatically. Browsers may silently ignore
+            // this or ask the user for confirmation first, and their dialogs
+            // don't affect page visibility — so never navigate away on a timer;
+            // the button below retries with a user gesture instead.
             window.location.href = appLink;
 
-            // After 1s, show message if still here
             setTimeout(function() {
                 if (!hidden) {
+                    document.getElementById('spinner').classList.add('hidden');
                     document.getElementById('title').classList.remove('hidden');
+                    document.getElementById('open-app').classList.remove('hidden');
                     document.getElementById('message').classList.remove('hidden');
-
-                    // After 1 more second, redirect to fallback
-                    setTimeout(function() {
-                        if (!hidden) {
-                            window.location.href = fallback;
-                        }
-                    }, 1000);
                 }
-            }, 1000);
+            }, 3000);
         })();
     </script>
 </body>

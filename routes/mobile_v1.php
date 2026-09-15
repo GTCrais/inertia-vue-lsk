@@ -14,6 +14,8 @@ use App\Http\Controllers\Mobile\V1\MobileRegisteredUserController;
 use App\Http\Controllers\Mobile\V1\MobileSocialAuthCallbackController;
 use App\Http\Controllers\Mobile\V1\MobileSocialAuthExchangeTokenController;
 use App\Http\Controllers\Mobile\V1\MobileSocialAuthRedirectController;
+use App\Http\Controllers\User\PasswordController;
+use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +42,14 @@ Route::middleware('requestType:mobileApp')->group(function () {
 		Route::get('/notifications/count', MobileNotificationCountController::class)->name('notification.count');
 		Route::middleware(['throttle:pushNotificationsTokenStore'])->post('/push-notifications-token', [MobilePushNotificationTokenController::class, 'store'])->name('push-notifications-token.store');
 		Route::middleware(['throttle:pushNotificationsTokenDestroy'])->delete('/push-notifications-token', [MobilePushNotificationTokenController::class, 'destroy'])->name('push-notifications-token.destroy');
-		Route::delete('/user', [UserController::class, 'destroy'])->name('user.destroy');
+
+		Route::prefix('user')
+			->name('user.')
+			->group(function () {
+				Route::middleware(['throttleSuccessfulRequests:profileUpdate'])->post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+				Route::middleware(['throttleSuccessfulRequests:passwordUpdate'])->put('/password', [PasswordController::class, 'update'])->name('password.update');
+				Route::delete('/', [UserController::class, 'destroy'])->name('destroy');
+			});
 
 		// Shared controllers (auth.php)
 		Route::middleware(['throttleSuccessfulRequests:emailVerificationNotification'])->post('/email-verification-notification', [EmailVerificationNotificationController::class, 'store'])->name('email-verification-notification.store');

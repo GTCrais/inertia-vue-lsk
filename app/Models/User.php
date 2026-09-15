@@ -35,7 +35,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
 	protected $appends = [
-		'avatar_url'
+		'avatar_url', 'relative_avatar_path'
 	];
 
     /**

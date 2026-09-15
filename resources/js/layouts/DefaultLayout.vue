@@ -2,13 +2,13 @@
 	<app-head :metadata="metadata"></app-head>
 
 	<div class="main-container relative overflow-hidden flex flex-col min-h-screen text-17px text-gray-900">
-		<app-header :user="user"></app-header>
+		<app-header v-if="!hideHeaderAndFooter" :user="user"></app-header>
 
 		<div class="flex-grow flex flex-col">
 			<slot></slot>
 		</div>
 
-		<app-footer></app-footer>
+		<app-footer v-if="!hideHeaderAndFooter"></app-footer>
 	</div>
 
 	<Toaster position="top-right" rich-colors />
@@ -69,7 +69,9 @@
 		},
 
 		computed: {
-
+			hideHeaderAndFooter() {
+				return !!this.$page.props.hideHeaderAndFooter;
+			}
 		}
 	}
 </script>

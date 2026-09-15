@@ -34,11 +34,7 @@ class ProfileUpdateRequest extends FormRequest
 			$this->merge([
 				'avatar' => null
 			]);
-		} else if ($file = $this->file('avatar_file')) {
-			$this->merge([
-				'avatar' => Uuid::uuid4()->toString() . '.' . $file->extension()
-			]);
-		} else if ($this->input('avatar_base64')) {
+		} else if ($this->file('avatar_file') || $this->input('avatar_base64')) {
 			$this->merge([
 				'avatar' => Uuid::uuid4()->toString() . '.jpg'
 			]);

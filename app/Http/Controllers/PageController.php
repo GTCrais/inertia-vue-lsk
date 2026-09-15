@@ -16,6 +16,30 @@ class PageController extends Controller
 			return Inertia::render('Home');
 		}
 
+		if ($slug == 'terms-of-service') {
+			$viewMetadataProviderService->setTitle('Terms of service');
+
+			return Inertia::render('TermsOfService', [
+				'hideHeaderAndFooter' => $request->has('mobile')
+			]);
+		}
+
+		if ($slug == 'privacy-policy') {
+			$viewMetadataProviderService->setTitle('Privacy policy');
+
+			return Inertia::render('PrivacyPolicy', [
+				'hideHeaderAndFooter' => $request->has('mobile')
+			]);
+		}
+
+		if ($slug == 'sitemap') {
+			return response()
+				->view('sitemap', [
+					'lastPageEdit' => '2026-01-01T00:00:00+00:00'
+				])
+				->header('Content-Type', 'application/xml');
+		}
+
 		abort(404);
     }
 }

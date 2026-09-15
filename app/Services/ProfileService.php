@@ -7,6 +7,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Encoders\JpegEncoder;
 use Intervention\Image\Laravel\Facades\Image;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -36,7 +37,10 @@ class ProfileService
 			}
 
 			if ($avatarSource = ($data['avatar_file'] ?? $data['avatar_base64'] ?? null)) {
-				$encoded = Image::decode($avatarSource)->cover(300, 300)->encode();
+				$encoded = Image::decode($avatarSource)
+					->cover(300, 300)
+					->fillTransparentAreas('#ffffff')
+					->encode(new JpegEncoder(quality: 85));
 
 				Storage::put('avatars/' . $data['avatar'], $encoded);
 

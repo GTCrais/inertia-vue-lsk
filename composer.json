@@ -4,8 +4,10 @@
     "type": "project",
     "description": "The Inertia + Vue skeleton application for the Laravel framework.",
     "keywords": [
-        "laravel",
-        "framework"
+        "inertia",
+        "vue",
+        "starter-kit",
+        "laravel"
     ],
     "license": "MIT",
     "require": {

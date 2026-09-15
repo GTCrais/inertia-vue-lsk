@@ -53,7 +53,7 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'name' => ['required', 'string', 'max:150'],
+			'name' => ['nullable', 'string', 'max:150'],
 			'avatar_file' => ['nullable', 'image', 'max:20480'],
 			'avatar_base64' => ['nullable', 'string', function ($attribute, $value, $fail) {
 				try {

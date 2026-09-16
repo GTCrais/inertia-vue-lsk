@@ -20,7 +20,7 @@ class MobileAuthSessionController extends Controller
 
 	public function store(LoginRequest $request)
 	{
-		if (! ($user = $this->authService->login($request))) {
+		if (!($user = $this->authService->login($request))) {
 			abort(401, 'Invalid login credentials.');
 		}
 

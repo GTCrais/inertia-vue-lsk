@@ -33,7 +33,7 @@ class AuthService
 			}
 		}
 
-		return (auth()->guard('web')->user() ?? null);
+		return auth()->guard('web')->user() ?? null;
 	}
 
 	public function logout(Request $request)

@@ -7,18 +7,18 @@
     },
     "dependencies": {
         "@headlessui/vue": "^1.7.23",
-        "@inertiajs/vite": "^3.7.0",
-        "@inertiajs/vue3": "^3.7.0",
-        "@lucide/vue": "^1.33.0",
+        "@inertiajs/vite": "^3.7.1",
+        "@inertiajs/vue3": "^3.7.1",
+        "@lucide/vue": "^1.46.0",
         "@tailwindcss/vite": "^4.3.3",
-        "@vitejs/plugin-vue": "^6.0.8",
-        "axios": "^1.19.0",
+        "@vitejs/plugin-vue": "^6.0.9",
+        "axios": "^1.20.0",
         "clsx": "^2.1.1",
         "laravel-vite-plugin": "^3.2.0",
-        "tailwind-merge": "^3.6.0",
+        "tailwind-merge": "^3.7.0",
         "tailwindcss": "^4.3.3",
-        "vite": "^8.2.1",
-        "vue": "^3.5.41",
+        "vite": "^8.3.0",
+        "vue": "^3.5.42",
         "vue-sonner": "^2.0.9"
     }
 }

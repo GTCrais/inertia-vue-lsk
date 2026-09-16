@@ -15,21 +15,21 @@ class RequestMacroServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-		Request::macro('stateful', function() {
+		Request::macro('stateful', function () {
 			return $this->from_frontend;
 		});
 
-		Request::macro('stateless', function() {
+		Request::macro('stateless', function () {
 			return !$this->from_frontend;
 		});
 
-		Request::macro('mobileDeviceId', function() {
+		Request::macro('mobileDeviceId', function () {
 			$header = config('mobile.deviceIdHeader');
 
 			return $header ? $this->header($header) : null;
 		});
 
-		Request::macro('mobileApp', function() {
+		Request::macro('mobileApp', function () {
 			if ($this->from_frontend) {
 				return false;
 			}

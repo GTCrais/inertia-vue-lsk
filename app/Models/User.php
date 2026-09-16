@@ -61,7 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	public function relativeAvatarPath(): Attribute
 	{
 		return Attribute::make(
-			get: fn() => $this->avatar ? 'storage/avatars/' . $this->avatar : null
+			get: fn () => $this->avatar ? 'storage/avatars/' . $this->avatar : null
 		);
 	}
 

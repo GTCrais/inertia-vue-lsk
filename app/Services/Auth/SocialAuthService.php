@@ -38,7 +38,7 @@ class SocialAuthService
 		if (!$user) {
 			$this->refreshSession($request);
 
-			$user = DB::transaction(fn() => $this->createUserFromSocialiteUser($socialiteUser, $socialNetwork));
+			$user = DB::transaction(fn () => $this->createUserFromSocialiteUser($socialiteUser, $socialNetwork));
 		} else {
 			$this->updateUserFromSocialiteUser($socialiteUser, $user, $socialNetwork);
 		}

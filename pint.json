@@ -6,6 +6,10 @@
         "concat_space": {
             "spacing": "one"
         },
+        "function_declaration": {
+            "closure_fn_spacing": "one",
+            "closure_function_spacing": "one"
+        },
         "indentation_type": false,
         "method_chaining_indentation": false,
         "not_operator_with_successor_space": false,
@@ -22,7 +26,6 @@
         "no_unneeded_control_parentheses": false,
         "nullable_type_declaration": false,
         "blank_line_between_import_groups": false,
-        "function_declaration": false,
         "unary_operator_spaces": false,
         "class_definition": false
     }

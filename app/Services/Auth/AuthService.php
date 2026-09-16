@@ -64,7 +64,7 @@ class AuthService
 	{
 		$this->refreshSession($request);
 
-		$user = DB::transaction(fn() => User::create($request->validated()));
+		$user = DB::transaction(fn () => User::create($request->validated()));
 
 		event(new Registered($user));
 

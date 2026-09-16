@@ -19,13 +19,13 @@ class NotificationService
 			->where('created_at', '>=', now()->subWeeks(4))
 			->paginate(20);
 
-		defer(fn() => DatabaseNotification::whereKey($notifications->pluck('id'))->update(['read_at' => now()]));
+		defer(fn () => DatabaseNotification::whereKey($notifications->pluck('id'))->update(['read_at' => now()]));
 
-		$unreadNotifications = $notifications->filter(fn(DatabaseNotification $notification) => $notification->unread());
+		$unreadNotifications = $notifications->filter(fn (DatabaseNotification $notification) => $notification->unread());
 
 		if ($forMobile) {
 			return [
-				'paginator' => $notifications->through(fn($notification) => NotificationResource::make($notification)),
+				'paginator' => $notifications->through(fn ($notification) => NotificationResource::make($notification)),
 				'unreadNotificationCount' => $this->unreadNotificationsCount($user, $unreadNotifications->count())
 			];
 		}

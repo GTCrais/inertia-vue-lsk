@@ -12,6 +12,6 @@ class ScheduleRegistrar
 		// $schedule->command('horizon:snapshot')->everyFiveMinutes();
 		$schedule->command('sanctum:prune-expired --hours=24')->daily();
 		$schedule->command('queue:prune-failed --hours=168')->daily();
-		$schedule->call(fn() => resolve(AuthService::class)->pruneInactiveTokens())->name('prune-inactive-tokens')->daily();
+		$schedule->call(fn () => resolve(AuthService::class)->pruneInactiveTokens())->name('prune-inactive-tokens')->daily();
 	}
 }

@@ -17,7 +17,6 @@
         "statement_indentation": false,
         "trailing_comma_in_multiline": false,
 
-        "blank_line_between_import_groups": false,
         "unary_operator_spaces": false,
         "class_definition": false
     }

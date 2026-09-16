@@ -6,6 +6,7 @@ use App\Http\Resources\NotificationResource;
 use App\Models\User;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Pagination\LengthAwarePaginator;
+
 use function Illuminate\Support\defer;
 
 class NotificationService

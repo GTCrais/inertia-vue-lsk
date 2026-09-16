@@ -10,7 +10,7 @@ use function Illuminate\Support\defer;
 
 class NotificationService
 {
-	public function forNotificationsPage(null|User $user, $forMobile = false)
+	public function forNotificationsPage(?User $user, $forMobile = false)
 	{
 		$user = $user ?: new User;
 
@@ -34,7 +34,7 @@ class NotificationService
 			->additional(['unreadNotificationCount' => $this->unreadNotificationsCount($user, $unreadNotifications->count())]);
 	}
 
-	public function unreadNotificationsCount(null|User $user, $subtract = 0)
+	public function unreadNotificationsCount(?User $user, $subtract = 0)
 	{
 		return max(0, ($user?->unreadNotifications()->where('created_at', '>=', now()->subWeeks(4))->count() ?? 0) - $subtract);
 	}

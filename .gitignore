@@ -3,8 +3,10 @@
 .env
 .env.backup
 .env.production
+.mcp.json
 .phpactor.json
 .phpunit.result.cache
+/.claude/skills
 /.codex
 /.cursor/
 /.idea
@@ -23,6 +25,8 @@
 /storage/pail
 /vendor
 _ide_helper.php
+boost.json
+CLAUDE.md
 Homestead.json
 Homestead.yaml
 Thumbs.db

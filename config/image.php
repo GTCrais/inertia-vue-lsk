@@ -1,5 +1,8 @@
 <?php
 
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+
 return [
 
     /*
@@ -17,8 +20,8 @@ return [
     */
 
     'driver' => env('APP_ENV') === 'local'
-        ? \Intervention\Image\Drivers\Gd\Driver::class
-        : \Intervention\Image\Drivers\Imagick\Driver::class,
+        ? GdDriver::class
+        : ImagickDriver::class,
 
     /*
     |--------------------------------------------------------------------------

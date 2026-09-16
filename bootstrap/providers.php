@@ -1,7 +1,10 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\RequestMacroServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
+    AppServiceProvider::class,
     // App\Providers\HorizonServiceProvider::class,
-    App\Providers\RequestMacroServiceProvider::class,
+    RequestMacroServiceProvider::class,
 ];

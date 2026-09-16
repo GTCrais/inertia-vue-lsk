@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
@@ -15,9 +17,9 @@ class SanctumMiddleware extends EnsureFrontendRequestsAreStateful
 	/**
 	 * Handle the incoming requests.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
+	 * @param  Request  $request
 	 * @param  callable  $next
-	 * @return \Illuminate\Http\Response
+	 * @return Response
 	 */
 	public function handle($request, $next)
 	{
@@ -38,7 +40,7 @@ class SanctumMiddleware extends EnsureFrontendRequestsAreStateful
 	/**
 	 * Determine if the given request is from the first-party application frontend.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
+	 * @param  Request  $request
 	 * @return bool
 	 */
 	public static function fromFrontend($request)

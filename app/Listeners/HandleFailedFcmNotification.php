@@ -31,6 +31,7 @@ class HandleFailedFcmNotification
 
 		if ($report->messageTargetWasInvalid() || $report->messageWasSentToUnknownToken()) {
 			$this->clearToken($report);
+
 			return;
 		}
 
@@ -38,6 +39,7 @@ class HandleFailedFcmNotification
 
 		if ($error instanceof QuotaExceeded) {
 			$this->retry($event, delayMinutes: 5);
+
 			return;
 		}
 

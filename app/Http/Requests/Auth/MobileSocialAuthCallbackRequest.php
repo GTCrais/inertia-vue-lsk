@@ -32,6 +32,7 @@ class MobileSocialAuthCallbackRequest extends FormRequest
 					'oauth_error',
 					$this->input('error_description', 'Authentication was cancelled or failed')
 				);
+
 				return;
 			}
 
@@ -39,6 +40,7 @@ class MobileSocialAuthCallbackRequest extends FormRequest
 
 			if (!$state || !Cache::has("mobile_social_auth_state:{$state}")) {
 				$validator->errors()->add('state', 'Invalid or expired state parameter');
+
 				return;
 			}
 

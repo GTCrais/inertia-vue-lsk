@@ -16,7 +16,7 @@
         "statement_indentation": false,
         "trailing_comma_in_multiline": false,
 
-        "blank_line_before_statement": false,
+
         "elseif": false,
         "class_attributes_separation": false,
         "single_space_around_construct": false,

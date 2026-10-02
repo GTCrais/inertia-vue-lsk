@@ -17,8 +17,8 @@ class ViewMetadataProviderService
 		$this->title = config('app.name');
 		$this->description = config('app.name') . ' - slogan!';
 		$this->keywords = config('app.name');
-		$this->ogImage = url('storage/assets/misc/default_share_img.png');
-		$this->twitterImage = url('storage/assets/misc/twitter_share_img.png');
+		$this->ogImage = url('img/share/default_share_img.png');
+		$this->twitterImage = url('img/share/twitter_share_img.png');
 	}
 
 	public function setTitle($title)

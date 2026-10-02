@@ -10,7 +10,7 @@
 		<meta name="keywords" :content="metadata.keywords" />
 		<link rel="canonical" :href="metadata.canonicalUrl" />
 
-		<meta property="og:url" :content="fullUrl" />
+		<meta property="og:url" :content="metadata.canonicalUrl" />
 		<meta property="og:type" :content="metadata.ogType" />
 		<meta property="og:title" :content="metadata.title" />
 		<meta property="og:description" :content="metadata.description" />
@@ -27,13 +27,7 @@
 		},
 
 		props: {
-			metadata: Object,
-		},
-
-		data() {
-			return {
-				fullUrl: (this.$isBrowser ? window.location.href : '')
-			}
+			metadata: Object
 		},
 	}
 </script>
